@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Duwbakken voor anker — instructiekaart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Lichte dashboard-stijl v1.283 (Inter/JetBrains Mono, warm, rust-accent) */
+  :root{
+    --bg:#F7F3EC; --surface:#FFFDF9; --surface-2:#F1E9DD; --line:#E8DFD1;
+    --text:#2B2119; --text-dim:#6F6355;
+    --accent:#F26B3A; --accent-ink:#2B2119; --teal:#2563EB; --gold:#7A5F0E; --gold-solid:#7A5F0E;
+    --water:#E3EEF1; --water-line:#AFC9D1; --land:#F1E9DD; --land-line:#D9CDBC;
+    --barge:#93B8C4; --barge-line:#2B4B56; --kvb:#D9CDBC; --kvb-line:#2563EB;
+    --display:'Inter',system-ui,sans-serif; --sans:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans)}
+
+  .toolbar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--surface);border-bottom:1px solid var(--line);padding:9px 14px}
+  .toolbar .grow{flex:1 1 auto}
+  .toolbar select,.toolbar button{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 12px;cursor:pointer}
+  .toolbar button.print{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .toolbar .note{font-family:var(--mono);font-size:11px;color:var(--text-dim)}
+
+  .sheet{display:flex;justify-content:center;align-items:flex-start;overflow:auto;padding:14px;background:var(--bg)}
+  .holder{position:relative}
+  /* A4 liggend */
+  .page{position:absolute;top:0;left:0;width:297mm;height:210mm;background:var(--surface);color:var(--text);
+        box-shadow:0 6px 30px rgba(16,22,29,.14);padding:8mm;display:flex;flex-direction:column;gap:3.4mm;transform-origin:top left}
+
+  .head{display:flex;gap:6mm;align-items:flex-end;justify-content:space-between}
+  .head .kicker{font-family:var(--mono);font-size:9pt;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin:0 0 1mm}
+  .head h1{font-family:var(--display);font-weight:700;font-size:21pt;line-height:1;margin:0;letter-spacing:-.01em}
+  .head .sub{font-size:8.5pt;color:var(--text-dim);margin:1.4mm 0 0;max-width:150mm}
+  .keyfigs{display:flex;gap:3mm;flex:0 0 auto}
+  .kf{border:1px solid var(--line);border-radius:2mm;padding:2mm 3mm;background:var(--bg);text-align:center;min-width:24mm}
+  .kf .v{font-family:var(--display);font-weight:700;font-size:15pt;color:var(--accent);line-height:1}
+  .kf .l{font-family:var(--mono);font-size:6pt;letter-spacing:.03em;text-transform:uppercase;color:var(--text-dim);margin-top:1.3mm}
+
+  .legend{display:flex;gap:7mm;align-items:center;font-size:8pt;color:var(--text-dim);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:1.8mm 0}
+  .legend span{display:inline-flex;align-items:center;gap:2mm}
+  .sw{width:6mm;height:3.2mm;border-radius:1mm;border:1px solid var(--line);display:inline-block}
+  .sw.barge{background:var(--barge);border-color:var(--barge-line)} .sw.kvb{background:var(--kvb);border-color:var(--kvb-line)}
+  .sw.anchor{border:0;color:var(--gold);width:auto} .sw.move{border:0;color:var(--accent);width:auto}
+
+  .steps{flex:1 1 auto;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:3.2mm;min-height:0}
+  .step{border:1px solid var(--line);border-radius:2mm;padding:2.6mm 3mm;background:var(--surface);display:flex;flex-direction:column;gap:1.6mm;min-height:0}
+  .step .hd{display:flex;align-items:center;gap:2.4mm}
+  .step .num{flex:0 0 auto;width:6mm;height:6mm;border-radius:1.5mm;background:var(--accent);color:var(--accent-ink);font-family:var(--display);font-weight:700;font-size:9pt;display:flex;align-items:center;justify-content:center}
+  .step .ti{font-family:var(--display);font-weight:600;font-size:10pt;flex:1 1 auto;line-height:1.05}
+  .step .badge{flex:0 0 auto;font-family:var(--mono);font-size:7pt;font-weight:500;color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));border-radius:99px;padding:.5mm 2mm;white-space:nowrap}
+  .step svg{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:1.4mm;background:var(--water)}
+  .step .ax{font-size:8pt;line-height:1.3;color:var(--text);margin:0}
+
+  .foot{display:flex;gap:5mm;align-items:flex-start}
+  .safety{flex:1 1 auto}
+  .safety h2{font-family:var(--display);font-weight:600;font-size:9pt;margin:0 0 1.4mm}
+  .safety ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1mm 5mm}
+  .safety li{position:relative;padding-left:4mm;font-size:7.5pt;line-height:1.25}
+  .safety li::before{content:"";position:absolute;left:0;top:1.1mm;width:2mm;height:2mm;background:var(--gold);transform:rotate(45deg)}
+  .disc{flex:0 0 58mm;font-size:6.5pt;line-height:1.3;color:var(--text-dim);border-left:1px solid var(--line);padding-left:4mm}
+
+  @media print{
+    .toolbar{display:none}
+    body{background:#fff}
+    .sheet{display:block;overflow:visible;padding:0}
+    .holder{width:auto!important;height:auto!important;position:static}
+    .page{position:static;transform:none!important;box-shadow:none;width:297mm;height:210mm}
+    @page{size:A4 landscape;margin:0}
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <select id="langSel" aria-label="Taal / Sprache / Language">
+      <option value="nl">🇳🇱 Nederlands</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="en">🇬🇧 English</option>
+    </select>
+    <span class="note" id="noteEl">Liggend A4 · zet ‘Achtergrondafbeeldingen’ aan voor de kleuren.</span>
+    <span class="grow"></span>
+    <button class="print" id="printBtn" type="button">🖨 Print / PDF</button>
+  </div>
+
+  <div class="sheet" id="sheet">
+    <div class="holder" id="holder">
+      <div class="page" id="page">
+        <div class="head">
+          <div>
+            <p class="kicker" id="kicker">Instructiekaart · Dintelhaven</p>
+            <h1 id="titleEl">Twee duwbakken voor anker leggen</h1>
+            <p class="sub" id="subEl">—</p>
+          </div>
+          <div class="keyfigs" id="keyfigs"></div>
+        </div>
+        <div class="legend" id="legendLine"></div>
+        <div class="steps" id="steps"></div>
+        <div class="foot">
+          <div class="safety">
+            <h2 id="safetyTitle">Veiligheidspunten</h2>
+            <ul id="safetyList"></ul>
+          </div>
+          <div class="disc" id="footerEl">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+  var I18N={
+    nl:{
+      kicker:"Instructiekaart · Dintelhaven", title:"Twee duwbakken voor anker leggen",
+      sub:"Lange formatie: 2 Europa II-duwbakken (elk 76,5 m) aan bakboord, koppelverband (KVB, 185 m) aan stuurboord langszij.",
+      note:"Liggend A4 · zet ‘Achtergrondafbeeldingen’ aan voor de kleuren.",
+      print:"🖨 Print / PDF", safetyTitle:"Veiligheidspunten",
+      legend:["Duwbak (BB)","KVB / motorschip (SB)","⚓ anker + ketting","➜ beweging"],
+      keyfigs:[["5–10 m","Kop van de wal"],["60 m","Vooranker vieren"],["30 m","Daarna beide ankers"],["2","Ankers: voor + achter"]],
+      safety:["Nader met minimale vaart; let op stroming en wind.","Anker nooit laten vallen met te veel vaart.","Ketting gecontroleerd vieren, niet met een klap.","Controleer dat beide ankers houden vóór het loskoppelen.","Houd afstand tot de wal en langsvarende scheepvaart.","Blijf controleren of de set niet krabt of verloopt."],
+      footer:"Vereenvoudigde weergave voor instructie — niet op schaal. Volg altijd de schipper en de geldende voorschriften.",
+      badges:["aanvaren","5–10 m","60 m","−60 m","2e anker","30 m / 30 m","los","→ kade ✓"],
+      steps:[
+        {ti:"Aanvaren", ax:"KVB (SB) + 2 bakken (BB) varen naar de lege bakkenplaats."},
+        {ti:"Stilleggen", ax:"Kop 5–10 m van de wal stilleggen; vaart eruit."},
+        {ti:"Anker voor", ax:"Voorop anker laten vallen (60 m ketting beschikbaar)."},
+        {ti:"60 m achteruit", ax:"60 m achteruit; voorketting volledig vieren."},
+        {ti:"Anker achter", ax:"Achterop anker laten vallen, in lijn met het vooranker."},
+        {ti:"30 m vooruit", ax:"30 m vooruit: achter 30 m vieren, voor 30 m inhalen. Beide ankers 30 m."},
+        {ti:"Loskoppelen", ax:"Koppeldraden los; controleer dat de ankers houden."},
+        {ti:"Klaar — KVB weg", ax:"KVB vaart naar de kade; de bakken blijven zelfstandig vast tussen twee ankers, elk 30 m ketting."}
+      ]
+    },
+    de:{
+      kicker:"Merkblatt · Dintelhaven", title:"Zwei Schubleichter vor Anker legen",
+      sub:"Lange Formation: 2 Europa-II-Leichter (je 76,5 m) an Backbord, Koppelverband (KVB, 185 m) längsseits an Steuerbord.",
+      note:"A4 quer · ‘Hintergrundgrafiken’ aktivieren für die Farben.",
+      print:"🖨 Drucken / PDF", safetyTitle:"Sicherheitshinweise",
+      legend:["Schubleichter (BB)","KVB / Motorschiff (SB)","⚓ Anker + Kette","➜ Bewegung"],
+      keyfigs:[["5–10 m","Bug vom Ufer"],["60 m","Buganker fieren"],["30 m","Danach beide Anker"],["2","Anker: vorn + hinten"]],
+      safety:["Mit minimaler Fahrt annähern; auf Strömung und Wind achten.","Anker nie mit zu viel Fahrt fallen lassen.","Kette kontrolliert fieren, nicht mit einem Ruck.","Vor dem Abkoppeln prüfen, dass beide Anker halten.","Abstand zum Ufer und zur Schifffahrt halten.","Prüfen, dass der Verband nicht schleift oder treibt."],
+      footer:"Vereinfachte Darstellung zu Schulungszwecken — nicht maßstabsgetreu. Stets Schiffsführer und Vorschriften befolgen.",
+      badges:["Anfahrt","5–10 m","60 m","−60 m","2. Anker","30 m / 30 m","lösen","→ Kai ✓"],
+      steps:[
+        {ti:"Anfahren", ax:"KVB (SB) + 2 Leichter (BB) fahren zum leeren Liegeplatz."},
+        {ti:"Stoppen", ax:"Bug 5–10 m vor dem Ufer stoppen; Fahrt heraus."},
+        {ti:"Anker vorn", ax:"Vorn Anker fallen lassen (60 m Kette verfügbar)."},
+        {ti:"60 m zurück", ax:"60 m zurück; vordere Kette voll fieren."},
+        {ti:"Anker hinten", ax:"Hinten Anker fallen lassen, in Linie mit dem Buganker."},
+        {ti:"30 m vor", ax:"30 m vor: hinten 30 m fieren, vorn 30 m einholen. Beide Anker 30 m."},
+        {ti:"Abkoppeln", ax:"Koppeldrähte lösen; prüfen, dass die Anker halten."},
+        {ti:"Fertig — KVB weg", ax:"KVB fährt zum Kai; die Leichter bleiben selbstständig fest zwischen zwei Ankern, je 30 m Kette."}
+      ]
+    },
+    en:{
+      kicker:"Instruction card · Dintelhaven", title:"Anchoring two barges",
+      sub:"Long formation: 2 Europa II barges (76.5 m each) on port, coupled unit (KVB, 185 m) alongside to starboard.",
+      note:"A4 landscape · enable ‘Background graphics’ for the colours.",
+      print:"🖨 Print / PDF", safetyTitle:"Safety points",
+      legend:["Barge (BB)","KVB / motor vessel (SB)","⚓ anchor + chain","➜ movement"],
+      keyfigs:[["5–10 m","Bow from shore"],["60 m","Pay out bow anchor"],["30 m","Then both anchors"],["2","Anchors: fore + aft"]],
+      safety:["Approach at minimum speed; mind current and wind.","Never let an anchor go with too much way on.","Pay out the chain under control, not with a jerk.","Check both anchors hold before casting off.","Keep clear of the shore and passing traffic.","Keep checking the unit isn’t dragging or shifting."],
+      footer:"Simplified view for instruction — not to scale. Always follow the skipper and the applicable regulations.",
+      badges:["approach","5–10 m","60 m","−60 m","2nd anchor","30 m / 30 m","cast off","→ quay ✓"],
+      steps:[
+        {ti:"Approach", ax:"KVB (SB) + 2 barges (BB) head to the empty berth."},
+        {ti:"Stop", ax:"Stop the bow 5–10 m from the shore; take way off."},
+        {ti:"Bow anchor", ax:"Drop the bow anchor (60 m chain available)."},
+        {ti:"60 m astern", ax:"Move 60 m astern; pay out the full bow chain."},
+        {ti:"Stern anchor", ax:"Drop the stern anchor, in line with the bow anchor."},
+        {ti:"30 m ahead", ax:"30 m ahead: pay out 30 m aft, heave in 30 m fwd. Both anchors 30 m."},
+        {ti:"Uncouple", ax:"Cast off the wires; check the anchors are holding."},
+        {ti:"Done — KVB away", ax:"KVB leaves for the quay; the barges stay made fast on their own between two anchors, 30 m chain each."}
+      ]
+    }
+  };
+
+  var BX=[8,8,8,68,68,38,38,38];
+  function mx(wx){ return (6 + wx*0.4917).toFixed(1); }
+  function mini(i){
+    var bowX=BX[i], sternX=bowX+154, bowAnk=i>=2, sternAnk=i>=4;
+    var kvb = i<=5?"along":(i===6?"detach":"gone");
+    var s='<svg viewBox="0 0 130 30" role="img" aria-label="schema">';
+    s+='<defs><pattern id="pd'+i+'" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="0.45" fill="var(--text)" opacity="0.07"/></pattern></defs>';
+    s+='<rect x="0" y="0" width="130" height="30" fill="var(--water)"/>';
+    s+='<rect x="0" y="0" width="130" height="30" fill="url(#pd'+i+')"/>';
+    s+='<rect x="0" y="0" width="130" height="3" fill="var(--land)"/>';               // ertskade top
+    s+='<rect x="0" y="0" width="6" height="30" fill="var(--land)"/>';                 // wal links
+    s+='<line x1="6" y1="0" x2="6" y2="30" stroke="var(--land-line)" stroke-width="0.5"/>';
+    s+='<rect x="'+mx(34)+'" y="14.2" width="'+(mx(196)-mx(34))+'" height="8.6" fill="none" stroke="var(--accent)" stroke-width="0.4" stroke-dasharray="2 1.6" opacity="0.6"/>';
+    if(kvb==="along"||kvb==="detach"){
+      var ky = kvb==="detach"?7.5:9.5;
+      s+='<rect x="'+mx(bowX)+'" y="'+ky+'" width="'+(mx(bowX+185)-mx(bowX))+'" height="4" rx="1" fill="var(--kvb)" stroke="var(--kvb-line)" stroke-width="0.4"/>';
+    } else {
+      s+='<rect x="'+mx(35)+'" y="3.4" width="'+(mx(220)-mx(35))+'" height="3.2" rx="1" fill="var(--kvb)" stroke="var(--kvb-line)" stroke-width="0.4" opacity="0.9"/>';
+    }
+    if(bowAnk) s+='<line x1="'+mx(8)+'" y1="18.5" x2="'+mx(bowX)+'" y2="18.5" stroke="var(--gold)" stroke-width="0.5" stroke-dasharray="1 0.8"/>';
+    if(sternAnk) s+='<line x1="'+mx(sternX)+'" y1="18.5" x2="'+mx(222)+'" y2="18.5" stroke="var(--gold)" stroke-width="0.5" stroke-dasharray="1 0.8"/>';
+    s+='<rect x="'+mx(bowX)+'" y="15" width="'+(mx(sternX)-mx(bowX))+'" height="7" rx="1.2" fill="var(--barge)" stroke="var(--barge-line)" stroke-width="0.5"/>';
+    if(bowAnk) s+='<path transform="translate('+mx(8)+' 18.5)" d="M-1.3,-1.6 L1.3,-1.6 M0,-1.9 L0,2.2 M-1.8,1.1 Q0,3.3 1.8,1.1" fill="none" stroke="var(--gold)" stroke-width="0.7"/>';
+    if(sternAnk) s+='<path transform="translate('+mx(222)+' 18.5)" d="M-1.3,-1.6 L1.3,-1.6 M0,-1.9 L0,2.2 M-1.8,1.1 Q0,3.3 1.8,1.1" fill="none" stroke="var(--gold)" stroke-width="0.7"/>';
+    if(i===3){ s+='<path d="M'+mx(96)+',26.5 L'+mx(150)+',26.5 M'+mx(150)+',26.5 l-2,-1.4 M'+mx(150)+',26.5 l-2,1.4" stroke="var(--accent)" stroke-width="0.8" fill="none"/>'; }
+    if(i===5){ s+='<path d="M'+mx(112)+',26.5 L'+mx(58)+',26.5 M'+mx(58)+',26.5 l2,-1.4 M'+mx(58)+',26.5 l2,1.4" stroke="var(--accent)" stroke-width="0.8" fill="none"/>'; }
+    s+='</svg>';
+    return s;
+  }
+
+  var els={};
+  ["langSel","printBtn","noteEl","kicker","titleEl","subEl","legendLine","keyfigs","steps","safetyTitle","safetyList","footerEl","sheet","holder","page"].forEach(function(id){els[id]=document.getElementById(id);});
+
+  var lang="nl";
+  try{ var sl=localStorage.getItem("dh-anker-kaart-lang"); if(sl&&I18N[sl]) lang=sl; }catch(e){}
+
+  function apply(){
+    var d=I18N[lang];
+    document.documentElement.lang=lang;
+    els.kicker.textContent=d.kicker; els.titleEl.textContent=d.title; els.subEl.textContent=d.sub;
+    els.noteEl.textContent=d.note; els.printBtn.textContent=d.print; els.safetyTitle.textContent=d.safetyTitle; els.footerEl.textContent=d.footer;
+    var swc=["barge","kvb","anchor","move"];
+    els.legendLine.innerHTML="";
+    d.legend.forEach(function(txt,idx){
+      var sp=document.createElement("span");
+      if(idx<2){ var b=document.createElement("span"); b.className="sw "+swc[idx]; sp.appendChild(b); sp.appendChild(document.createTextNode(" "+txt)); }
+      else { sp.textContent=txt; }
+      els.legendLine.appendChild(sp);
+    });
+    els.keyfigs.innerHTML="";
+    d.keyfigs.forEach(function(kf){ var el=document.createElement("div"); el.className="kf"; el.innerHTML='<div class="v">'+kf[0]+'</div><div class="l">'+kf[1]+'</div>'; els.keyfigs.appendChild(el); });
+    els.steps.innerHTML="";
+    d.steps.forEach(function(st,idx){
+      var el=document.createElement("div"); el.className="step";
+      el.innerHTML='<div class="hd"><span class="num">'+(idx+1)+'</span><span class="ti">'+st.ti+'</span><span class="badge">'+d.badges[idx]+'</span></div>'+mini(idx)+'<p class="ax">'+st.ax+'</p>';
+      els.steps.appendChild(el);
+    });
+    els.safetyList.innerHTML="";
+    d.safety.forEach(function(txt){ var li=document.createElement("li"); li.textContent=txt; els.safetyList.appendChild(li); });
+  }
+
+  // Schermweergave: A4-pagina schalen zodat hij in beeld past (print gebruikt ware grootte)
+  var PW=297*96/25.4, PH=210*96/25.4; // px bij 96dpi
+  function fitPage(){
+    var availW=els.sheet.clientWidth-28, availH=window.innerHeight-els.sheet.getBoundingClientRect().top-28;
+    var scale=Math.min(availW/PW, availH/PH);
+    if(!isFinite(scale)||scale<=0) scale=1;
+    els.page.style.transform="scale("+scale+")";
+    els.holder.style.width=(PW*scale)+"px";
+    els.holder.style.height=(PH*scale)+"px";
+  }
+
+  els.langSel.addEventListener("change",function(){ lang=this.value; try{ localStorage.setItem("dh-anker-kaart-lang",lang); }catch(e){} apply(); });
+  els.printBtn.addEventListener("click",function(){ window.print(); });
+  window.addEventListener("resize",fitPage);
+  els.langSel.value=lang;
+  apply();
+  fitPage();
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitPage).catch(function(){});
+})();
+</script>
+</body>
+</html>

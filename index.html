@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Duwbakken voor anker — instructie-animatie</title>
+<meta name="description" content="Meertalige stap-voor-stap instructie-animatie (NL/DE/EN) voor het nautisch veilig voor anker leggen van twee duwbakken in de Dintelhaven.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Lichte dashboard-stijl v1.283 (Inter/JetBrains Mono, warm, rust-accent) */
+  :root{
+    --bg:#F7F3EC; --surface:#FFFDF9; --surface-2:#F1E9DD; --line:#E8DFD1;
+    --text:#2B2119; --text-dim:#6F6355;
+    --accent:#F26B3A; --accent-ink:#2B2119; --teal:#2563EB; --gold:#7A5F0E;
+    --barge:#93B8C4; --barge-line:#2B4B56;
+    --display:'Inter',system-ui,sans-serif; --sans:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;
+       display:flex;flex-direction:column;align-items:center;padding:32px 16px 48px}
+  .wrap{width:100%;max-width:760px}
+  header{margin:8px 0 4px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(24px,5vw,34px);line-height:1.08;margin:0;letter-spacing:-.01em}
+  .sub{color:var(--text-dim);font-size:15px;line-height:1.5;margin:12px 0 0}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:28px 0 0}
+  a.card{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:inherit;background:var(--surface);
+         border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;transition:border-color .15s,transform .15s,box-shadow .15s}
+  a.card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(16,22,29,.08)}
+  a.card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .ico{font-size:26px;line-height:1}
+  .ct{font-family:var(--display);font-weight:600;font-size:17px}
+  .cd{font-size:13px;color:var(--text-dim);line-height:1.4}
+  .tag{align-self:flex-start;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;
+       color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));border-radius:99px;padding:2px 9px;margin-top:2px}
+  footer{margin:34px 0 0;font-size:12.5px;color:var(--text-dim);line-height:1.5}
+  footer b{color:var(--text);font-weight:600}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="kicker">Nautische instructie · Dintelhaven</p>
+      <h1>Twee duwbakken voor anker leggen</h1>
+      <p class="sub">Stap-voor-stap animatie voor een lange formatie van twee Europa&nbsp;II-duwbakken
+      (elk 76,5&nbsp;m) met het koppelverband (KVB, 185&nbsp;m) aan stuurboord langszij — veilig voor
+      twee ankers gelegd. Kies hieronder de weergave die bij je scherm past. Beschikbaar in
+      Nederlands, Duits en Engels.</p>
+    </header>
+
+    <nav class="cards">
+      <a class="card" href="duwbakken-anker-animatie.html">
+        <span class="ico">🖥️</span>
+        <span class="ct">Groot scherm</span>
+        <span class="cd">Volledige animatie met toelichting, boven- en zijaanzicht. Voor pc of tablet.</span>
+        <span class="tag">NL · DE · EN</span>
+      </a>
+      <a class="card" href="duwbakken-anker-mobiel.html">
+        <span class="ico">📱</span>
+        <span class="ct">Mobiel (liggend)</span>
+        <span class="cd">Kale tekening met alleen de meters. Speelt automatisch; met de vinger pauzeren en spoelen.</span>
+        <span class="tag">telefoon</span>
+      </a>
+      <a class="card" href="duwbakken-anker-instructiekaart.html">
+        <span class="ico">🖨️</span>
+        <span class="ct">Instructiekaart</span>
+        <span class="cd">Eén liggende A4 met alle acht stappen — printen of als PDF uitdelen.</span>
+        <span class="tag">print · PDF</span>
+      </a>
+      <a class="card" href="duwbakken-anker-animatie-offline.html">
+        <span class="ico">💾</span>
+        <span class="ct">Offline-versie</span>
+        <span class="cd">Grote animatie met ingebakken lettertypen — werkt zonder internet, los op te slaan.</span>
+        <span class="tag">zonder internet</span>
+      </a>
+    </nav>
+
+    <footer>
+      <b>Let op:</b> vereenvoudigde weergave voor instructiedoeleinden — afstanden en afmetingen zijn
+      niet op ware schaal met de werkelijke haven. Volg altijd de instructies van de schipper en de
+      geldende voorschriften.
+    </footer>
+  </div>
+</body>
+</html>

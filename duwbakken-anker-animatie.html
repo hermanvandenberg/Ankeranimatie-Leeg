@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Duwbakken voor anker</title>
+<meta name="description" content="Meertalige stap-voor-stap instructie-animatie (NL/DE/EN) voor het nautisch veilig voor anker leggen van twee duwbakken in de Dintelhaven.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Lichte thema van de Duwbakkenplanning (v1.283: Inter/JetBrains Mono, warm) */
+  :root{
+    --bg:#F7F3EC; --surface:#FFFDF9; --surface-2:#F1E9DD; --line:#E8DFD1;
+    --text:#2B2119; --text-dim:#6F6355;
+    --accent:#F26B3A; --accent-ink:#2B2119; --accent-dim:#C94E22;
+    --teal:#2563EB; --gold:#7A5F0E; --done:#178055; --danger:#D63A3F;
+    --water:#E3EEF1; --water-line:#AFC9D1; --land:#F1E9DD; --land-line:#D9CDBC;
+    --bottom:#E3D6BB; --foam:rgba(255,255,255,.92);
+    --barge:#93B8C4; --barge-line:#2B4B56; --bak-ink:#2B2119;
+    --kvb:#D9CDBC; --kvb-line:#2563EB; --kvb-ink:#2B2119;
+    --gold-solid:#7A5F0E;
+    --radius-sm:8px; --radius-md:14px;
+    --display:'Inter',system-ui,sans-serif;
+    --sans:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    color-scheme:light;
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.5;margin:0}
+  .wrap{max-width:1080px;margin:0 auto;padding-block:22px 40px;padding-left:16px;padding-right:16px}
+
+  header{display:flex;flex-wrap:wrap;gap:14px 18px;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+  .brandline{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(23px,4.6vw,34px);letter-spacing:-.02em;line-height:1.05;margin:0;text-wrap:balance}
+  .sub{color:var(--text-dim);font-size:14px;margin:8px 0 0;max-width:62ch}
+  .head-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .theme-btn,.lang{font-family:var(--mono);font-size:12px;color:var(--text-dim);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px 12px;cursor:pointer;white-space:nowrap}
+  .theme-btn:hover{color:var(--text)}
+  .lang{color:var(--text)}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md)}
+  .stage{position:relative;overflow:hidden;padding:0}
+  .stage svg{display:block;width:100%;height:auto}
+  .stage-label{position:absolute;top:10px;left:12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-dim);background:color-mix(in srgb,var(--surface) 78%,transparent);padding:3px 7px;border-radius:4px;border:1px solid var(--line);pointer-events:none}
+  .stage-top{margin-bottom:12px}
+
+  .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--bg) 46%,transparent);cursor:pointer;z-index:3}
+  .overlay .play{display:flex;align-items:center;gap:12px;font-family:var(--display);font-weight:700;font-size:16px;color:var(--accent-ink);background:var(--accent);border-radius:999px;padding:14px 26px;box-shadow:0 6px 24px rgba(0,0,0,.28)}
+  .overlay[hidden]{display:none}
+
+  .controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 12px}
+  .controls .grp{display:flex;gap:8px;align-items:center}
+  .controls button{font-family:var(--sans);font-weight:600;font-size:13px;color:var(--text);background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+  .controls button:hover{border-color:var(--text-dim)}
+  .controls button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .controls .spacer{flex:1 1 auto;min-width:8px}
+  .stepcount{font-family:var(--mono);font-size:12px;color:var(--text-dim);white-space:nowrap}
+  .stepcount b{color:var(--text)}
+  .speed{font-family:var(--mono);font-size:12px;color:var(--text-dim);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px 8px}
+  .controls2{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 14px}
+  .toggle{font-family:var(--sans);font-weight:600;font-size:12.5px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px 12px;cursor:pointer}
+  .toggle[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .scrub{flex:1 1 220px;min-width:170px;accent-color:var(--accent);height:26px;cursor:pointer}
+  .khint{font-family:var(--mono);font-size:10.5px;color:var(--text-dim);white-space:nowrap}
+
+  .steps{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;margin:0 0 6px;scrollbar-width:thin}
+  .chip{flex:0 0 auto;font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;color:var(--text-dim);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;display:flex;gap:7px;align-items:center;transition:color .2s,border-color .2s,background .2s}
+  .chip .n{font-weight:500;opacity:.7}
+  .chip:hover{color:var(--text)}
+  .chip.active{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+  .chip.active .n{opacity:.85}
+  .chip.done{border-color:var(--accent-dim);color:var(--text)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:12px;align-items:start;margin-bottom:14px}
+  .col-left,.col-right{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .col-left .stage-top{margin-bottom:0}
+  .col-right{position:sticky;top:env(safe-area-inset-top,0px)}
+  .panel{display:grid;grid-template-columns:1.7fr 1fr;gap:12px;margin-bottom:14px}
+  .stepinfo{padding:18px 20px}
+  .stepinfo .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  .stepinfo h2{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance}
+  .stepinfo p.d{margin:0;font-size:14.5px;color:var(--text)}
+  .tip{margin:14px 0 0;display:flex;gap:10px;align-items:flex-start;background:color-mix(in srgb,var(--gold) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--gold) 40%,var(--line));border-radius:var(--radius-sm);padding:10px 12px}
+  .tip .ic{flex:0 0 auto;color:var(--gold);font-size:14px;line-height:1.3}
+  .tip .tx{font-size:13px;color:var(--text)}
+  .tip .tx b{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:2px}
+  .readouts{padding:16px 18px;display:flex;flex-direction:column;gap:12px;justify-content:center}
+  .ro{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:10px}
+  .ro:last-child{border-bottom:0;padding-bottom:0}
+  .ro .lab{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-dim)}
+  .ro .val{font-family:var(--mono);font-weight:500;font-size:19px;color:var(--text);font-variant-numeric:tabular-nums}
+  .ro .val.gold{color:var(--gold)}
+
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .info{padding:16px 18px}
+  .info h3{font-family:var(--display);font-weight:600;font-size:14px;margin:0 0 12px;letter-spacing:.01em}
+  .legend{display:flex;flex-direction:column;gap:9px}
+  .lg{display:flex;align-items:center;gap:10px;font-size:13px}
+  .sw{flex:0 0 auto;width:22px;height:14px;border-radius:3px;border:1px solid var(--line)}
+  .sw.barge{background:var(--barge);border-color:var(--barge-line)}
+  .sw.kvb{background:var(--kvb);border-color:var(--kvb-line)}
+  .sw.zone{background:transparent;border:1.5px dashed var(--accent)}
+  .sw.anchor{background:transparent;border:0;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:15px;width:22px}
+  .sw.move{background:transparent;border:0;color:var(--accent);font-size:16px;display:flex;align-items:center;width:22px}
+  .safety{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+  .safety li{position:relative;padding-left:22px;font-size:13px;color:var(--text)}
+  .safety li::before{content:"";position:absolute;left:2px;top:6px;width:8px;height:8px;border-radius:2px;background:var(--gold);transform:rotate(45deg)}
+  footer{margin-top:18px;color:var(--text-dim);font-size:12px;line-height:1.6;border-top:1px solid var(--line);padding-top:14px}
+
+  text{font-family:var(--mono)}
+  .halo{paint-order:stroke;stroke:var(--bg);stroke-width:2.4px;stroke-linejoin:round}
+  .t-lbl{fill:var(--text-dim);font-size:5.4px}
+  .t-strong{fill:var(--text);font-size:6px;font-weight:500}
+  .t-acc{fill:var(--accent);font-weight:500}
+  .watermark{fill:var(--text);opacity:.10;font-family:var(--display);font-weight:700}
+  .baknr{fill:var(--bak-ink);font-family:var(--display);font-weight:700;paint-order:stroke;stroke:var(--barge);stroke-width:2.2px;stroke-linejoin:round}
+  .fade{transition:opacity .35s ease}
+  @keyframes washpulse{0%,100%{opacity:.15}50%{opacity:.75}}
+  @keyframes bowpulse{0%,100%{opacity:.2}50%{opacity:.6}}
+  .wash-el{animation:washpulse .8s ease-in-out infinite}
+  .bow-el{animation:bowpulse 1s ease-in-out infinite}
+  @media (prefers-reduced-motion:reduce){.fade{transition:none}.wash-el,.bow-el{animation:none}}
+
+  /* Schermvullende indeling: animatie links groot, tekst rechts compact */
+  html,body{height:100%}
+  body{overflow:hidden}
+  #app{height:100dvh;display:grid;grid-template-columns:minmax(0,1fr) clamp(250px,27%,350px);background:var(--bg)}
+  .col-anim{position:relative;min-width:0;min-height:0;display:flex;flex-direction:column;background:var(--water);overflow:hidden}
+  .top-stage{position:relative;flex:1 1 auto;min-height:0;overflow:hidden}
+  .top-stage>svg{position:absolute;inset:0;width:100%;height:100%}
+  .side-stage{position:relative;flex:0 0 auto;height:clamp(170px,32vh,380px);border-top:1px solid var(--line);background:var(--surface);overflow:hidden}
+  .side-stage>svg{position:absolute;inset:0;width:100%;height:100%}
+  .side-lbl{position:absolute;top:6px;left:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);z-index:2;pointer-events:none}
+
+  .tools{position:absolute;top:10px;right:10px;display:flex;gap:6px;align-items:center;z-index:4}
+  .tools select,.tools button{font-family:var(--mono);font-size:12px;color:var(--text);background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--line);border-radius:var(--radius-sm);padding:6px 8px;cursor:pointer}
+  .tools button{width:32px;height:32px;display:flex;align-items:center;justify-content:center;padding:0;font-size:14px}
+  .tools button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+  .bar{position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;gap:7px;z-index:4;background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--line);border-radius:999px;padding:6px 10px;backdrop-filter:blur(3px)}
+  .bar button{font-family:var(--sans);font-weight:600;font-size:14px;color:var(--text);background:transparent;border:0;border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .bar button.primary{background:var(--accent);color:var(--accent-ink)}
+  .bar button:hover{background:color-mix(in srgb,var(--text) 10%,transparent)}
+  .bar button.primary:hover{filter:brightness(1.05)}
+  .bar .scrub{flex:1 1 auto;min-width:40px;accent-color:var(--accent);height:24px;cursor:pointer}
+  .bar .cnt{font-family:var(--mono);font-size:11px;color:var(--text-dim);white-space:nowrap}
+
+  .panel2{min-width:0;display:flex;flex-direction:column;gap:9px;padding:16px;border-left:1px solid var(--line);background:var(--bg);overflow:hidden}
+  .panel2 .kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin:0}
+  .panel2 h2{font-family:var(--display);font-weight:700;font-size:17px;line-height:1.15;margin:2px 0 0;color:var(--text);text-wrap:balance}
+  .panel2 .d{font-size:12.5px;line-height:1.4;color:var(--text-dim);margin:0}
+  .panel2 .tip{display:flex;gap:7px;background:color-mix(in srgb,var(--gold) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--gold) 36%,var(--line));border-radius:var(--radius-sm);padding:7px 9px}
+  .panel2 .tip b{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:1px}
+  .panel2 .tip .tx{font-size:11px;color:var(--text);line-height:1.35}
+  .ros{display:flex;gap:7px}
+  .ros .r{flex:1 1 0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:6px 8px;min-width:0}
+  .ros .r .lab{font-family:var(--mono);font-size:8px;letter-spacing:.03em;text-transform:uppercase;color:var(--text-dim);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ros .r .val{font-family:var(--mono);font-size:14px;color:var(--text);font-variant-numeric:tabular-nums}
+  .ros .r .val.gold{color:var(--gold)}
+  .steps2{display:flex;flex-direction:column;gap:2px;margin-top:2px;overflow:auto;min-height:0}
+  .steps2 .chip{display:flex;gap:8px;align-items:center;text-align:left;font-family:var(--sans);font-size:11.5px;color:var(--text-dim);background:transparent;border:1px solid transparent;border-radius:var(--radius-sm);padding:5px 8px;cursor:pointer}
+  .steps2 .chip .n{font-family:var(--mono);font-size:10px;opacity:.7;min-width:14px}
+  .steps2 .chip:hover{color:var(--text);background:var(--surface)}
+  .steps2 .chip.active{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+  .steps2 .chip.active .n{opacity:.9}
+  .steps2 .chip.done{color:var(--text)}
+
+  /* Smaller/korter scherm: altijd binnen beeld blijven — de kaders krimpen mee
+     (de SVG schaalt via viewBox), i.p.v. buiten het scherm te vallen. */
+  @media (max-width:820px){
+    #app{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) minmax(0,42vh)}
+    .panel2{border-left:0;border-top:1px solid var(--line);overflow:auto;min-height:0}
+  }
+  @media (max-height:540px){
+    .side-stage{display:none}
+  }
+</style>
+
+</head>
+<body>
+<div id="app">
+  <div class="col-anim">
+  <div class="top-stage">
+    <svg id="top" viewBox="-16 -6 296 200" role="img" aria-label="Bovenaanzicht ankermanoeuvre">
+      <rect x="-16" y="-6" width="296" height="200" fill="var(--water)"/>
+      <defs><pattern id="dots" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="1.2" cy="1.2" r="0.5" fill="var(--text)" opacity="0.06"/></pattern></defs>
+      <rect x="-16" y="-6" width="296" height="200" fill="url(#dots)"/>
+
+      <!-- Ertskade (bovenrand van de haven) -->
+      <rect x="-16" y="-6" width="296" height="14" fill="var(--land)"/>
+      <line x1="-16" y1="8" x2="280" y2="8" stroke="var(--land-line)" stroke-width="0.8"/>
+      <polygon points="94,8 120,-6 158,-6 186,8" fill="var(--gold-solid)" opacity="0.5"/>
+      <polygon points="126,8 142,-3 164,-3 180,8" fill="var(--gold-solid)" opacity="0.4"/>
+      <text id="sErts" x="140" y="4" text-anchor="middle" class="t-strong halo" style="font-size:5.6px;letter-spacing:.09em">ERTSKADE</text>
+
+      <!-- Kolenkade (onderrand van de haven) — bewust iets hoger zodat de shoreline en het label
+           vrij blijven van de zwevende bedieningsbalk onderaan; de kade loopt door tot onderrand. -->
+      <rect x="-16" y="150" width="296" height="44" fill="var(--land)"/>
+      <line x1="-16" y1="150" x2="280" y2="150" stroke="var(--land-line)" stroke-width="0.8"/>
+      <polygon points="94,150 120,163 158,163 186,150" fill="#4a4139" opacity="0.5"/>
+      <polygon points="126,150 142,159 164,159 180,150" fill="#4a4139" opacity="0.4"/>
+      <text id="sKolenkade" x="140" y="161" text-anchor="middle" class="t-strong halo" style="font-size:5.6px;letter-spacing:.09em">KOLENKADE</text>
+
+      <rect x="-16" y="-6" width="16" height="200" fill="var(--land)"/>
+      <line x1="0" y1="-6" x2="0" y2="194" stroke="var(--land-line)" stroke-width="1"/>
+      <text id="sWal" x="-8" y="120" text-anchor="middle" class="t-strong halo" style="font-size:6px;letter-spacing:.12em" transform="rotate(-90 -8 120)">WAL</text>
+
+      <text x="140" y="58" text-anchor="middle" class="watermark" style="font-size:15px;letter-spacing:.12em">DINTELHAVEN</text>
+
+      <g id="zone" class="fade">
+        <rect x="34" y="100" width="162" height="16.5" rx="2" fill="var(--accent)" fill-opacity="0.05" stroke="var(--accent)" stroke-width="0.8" stroke-dasharray="4 3"/>
+      </g>
+
+      <g id="bowAnchorTop" class="fade" opacity="0" transform="translate(8 108)">
+        <line x1="0" y1="-2.2" x2="0" y2="2.2" stroke="var(--gold)" stroke-width="1.1"/>
+        <circle cx="0" cy="-1.9" r="1.1" fill="none" stroke="var(--gold)" stroke-width="1"/>
+        <path d="M-3.4,0.9 Q0,3.9 3.4,0.9" fill="none" stroke="var(--gold)" stroke-width="1.1"/>
+        <line x1="-1.8" y1="-0.8" x2="1.8" y2="-0.8" stroke="var(--gold)" stroke-width="1.1"/>
+      </g>
+      <g id="sternAnchorTop" class="fade" opacity="0" transform="translate(222 108)">
+        <line x1="0" y1="-2.2" x2="0" y2="2.2" stroke="var(--gold)" stroke-width="1.1"/>
+        <circle cx="0" cy="-1.9" r="1.1" fill="none" stroke="var(--gold)" stroke-width="1"/>
+        <path d="M-3.4,0.9 Q0,3.9 3.4,0.9" fill="none" stroke="var(--gold)" stroke-width="1.1"/>
+        <line x1="-1.8" y1="-0.8" x2="1.8" y2="-0.8" stroke="var(--gold)" stroke-width="1.1"/>
+      </g>
+      <path id="bowChainTop" d="" fill="none" stroke="var(--gold)" stroke-width="1" stroke-dasharray="1.4 1.4" opacity="0"/>
+      <path id="sternChainTop" d="" fill="none" stroke="var(--gold)" stroke-width="1" stroke-dasharray="1.4 1.4" opacity="0"/>
+
+      <g id="gKVBTop">
+        <g id="kvbWash" opacity="0">
+          <path class="wash-el" style="animation-delay:0s" d="M186,-3 q7,1.5 14,0" fill="none" stroke="var(--foam)" stroke-width="1.3" stroke-linecap="round"/>
+          <path class="wash-el" style="animation-delay:.15s" d="M186,0 q9,2 18,0" fill="none" stroke="var(--foam)" stroke-width="1.5" stroke-linecap="round"/>
+          <path class="wash-el" style="animation-delay:.3s" d="M186,3 q7,-1.5 14,0" fill="none" stroke="var(--foam)" stroke-width="1.3" stroke-linecap="round"/>
+          <circle class="wash-el" style="animation-delay:.1s" cx="199" cy="-1.6" r="1" fill="var(--foam)"/>
+          <circle class="wash-el" style="animation-delay:.28s" cx="204" cy="1.6" r="1.2" fill="var(--foam)"/>
+          <circle class="wash-el" style="animation-delay:.42s" cx="209" cy="0" r="0.9" fill="var(--foam)"/>
+        </g>
+        <g id="kvbBow" opacity="0">
+          <path class="bow-el" d="M0,0 Q5,-3.4 11,-7" fill="none" stroke="var(--foam)" stroke-width="1.1" stroke-linecap="round"/>
+          <path class="bow-el" style="animation-delay:.2s" d="M0,0 Q5,3.4 11,7" fill="none" stroke="var(--foam)" stroke-width="1.1" stroke-linecap="round"/>
+        </g>
+        <path d="M6,-4.75 L185,-4.75 L185,4.75 L6,4.75 L0,0 Z" fill="var(--kvb)" stroke="var(--kvb-line)" stroke-width="0.7"/>
+        <rect x="163" y="-3.15" width="16" height="6.3" rx="1" fill="var(--accent)"/>
+        <line x1="171" y1="-3.15" x2="171" y2="-6.4" stroke="var(--kvb-line)" stroke-width="0.7"/>
+        <text id="sKvbLabel" x="90" y="1.6" text-anchor="middle" style="font-size:5px;font-weight:600;fill:var(--kvb-ink);paint-order:stroke;stroke:var(--kvb);stroke-width:1.8px;stroke-linejoin:round;letter-spacing:.05em">KVB · KOPPELVERBAND · 185 m</text>
+      </g>
+
+      <g id="gSetTop">
+        <rect id="setGlow" x="-2" y="-6" width="158" height="12" rx="2" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="3 2.4" opacity="0"/>
+        <g id="setBow" opacity="0">
+          <path class="bow-el" d="M0,0 Q6,-4 13,-8.5" fill="none" stroke="var(--foam)" stroke-width="1.1" stroke-linecap="round"/>
+          <path class="bow-el" style="animation-delay:.2s" d="M0,0 Q6,4 13,8.5" fill="none" stroke="var(--foam)" stroke-width="1.1" stroke-linecap="round"/>
+          <path class="bow-el" style="animation-delay:.1s" d="M1.5,-1.6 Q7,-3 13,-4.4" fill="none" stroke="var(--foam)" stroke-width="0.7" stroke-linecap="round" opacity="0.7"/>
+          <path class="bow-el" style="animation-delay:.32s" d="M1.5,1.6 Q7,3 13,4.4" fill="none" stroke="var(--foam)" stroke-width="0.7" stroke-linecap="round" opacity="0.7"/>
+        </g>
+        <path d="M6,-5.7 L76.5,-5.7 L76.5,5.7 L6,5.7 L0,0 Z" fill="var(--barge)" stroke="var(--barge-line)" stroke-width="0.7"/>
+        <path d="M77.5,-5.7 L148,-5.7 L154,0 L148,5.7 L77.5,5.7 Z" fill="var(--barge)" stroke="var(--barge-line)" stroke-width="0.7"/>
+        <line x1="10" y1="-5.7" x2="10" y2="5.7" stroke="var(--barge-line)" stroke-width="0.5" opacity="0.6"/>
+        <text x="40" y="2" text-anchor="middle" class="baknr" style="font-size:7px">1</text>
+        <text x="114" y="2" text-anchor="middle" class="baknr" style="font-size:7px">2</text>
+        <text id="sKop" x="4" y="-6.8" text-anchor="start" class="t-lbl halo" style="font-size:4px">KOP</text>
+        <text id="finalLbl" x="77" y="13.4" text-anchor="middle" class="t-acc halo" style="font-size:5px;font-weight:600;opacity:0">BLIJVEN VOOR ANKER LIGGEN</text>
+      </g>
+
+      <g id="wiresTop" class="fade"></g>
+
+      <g id="measWall" class="fade" opacity="0">
+        <path id="measWallPath" d="" fill="none" stroke="var(--teal)" stroke-width="0.7"/>
+        <text id="measWallLbl" class="halo" style="font-size:5.4px;font-weight:600;fill:var(--teal)" text-anchor="middle">5–10 m</text>
+      </g>
+      <g id="measBow" class="fade" opacity="0">
+        <path id="measBowPath" d="" fill="none" stroke="var(--gold)" stroke-width="0.7"/>
+        <text id="measBowLbl" class="halo" style="font-size:5.4px;font-weight:600;fill:var(--gold)" text-anchor="middle">60 m</text>
+      </g>
+      <g id="measStern" class="fade" opacity="0">
+        <path id="measSternPath" d="" fill="none" stroke="var(--gold)" stroke-width="0.7"/>
+        <text id="measSternLbl" class="halo" style="font-size:5.4px;font-weight:600;fill:var(--gold)" text-anchor="middle">30 m</text>
+      </g>
+      <g id="arrowG" class="fade" opacity="0">
+        <path id="arrowPath" d="" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <text id="arrowLbl" class="halo" style="font-size:5.2px;font-weight:600;fill:var(--accent)" text-anchor="middle"></text>
+      </g>
+
+    </svg>
+    <div class="overlay" id="overlay"><span class="play" id="overlayTxt">▶ Start</span></div>
+    <div class="tools">
+      <select class="lang" id="langSel" aria-label="Taal / Sprache / Language">
+        <option value="nl">🇳🇱 NL</option>
+        <option value="de">🇩🇪 DE</option>
+        <option value="en">🇬🇧 EN</option>
+      </select>
+      <select id="speedSel" aria-label="Snelheid">
+        <option value="1">1×</option>
+        <option value="2" selected>2×</option>
+        <option value="3">3×</option>
+      </select>
+      <button id="voiceBtn" type="button" aria-pressed="false" title="Voorlezen">🔊</button>
+    </div>
+    <div class="bar">
+      <button id="prevBtn" type="button" title="Vorige">⏮</button>
+      <button id="playBtn" class="primary" type="button" title="Afspelen/pauze">▶</button>
+      <button id="nextBtn" type="button" title="Volgende">⏭</button>
+      <button id="restartBtn" type="button" title="Opnieuw">↺</button>
+      <input id="scrub" class="scrub" type="range" min="0" max="800" value="100" step="1" aria-label="Tijdbalk">
+      <span class="cnt"><span id="stepWord">Stap</span> <b id="stepNum">1</b>/<span id="stepTotal">8</span></span>
+    </div>
+  </div><!-- /top-stage -->
+
+  <div class="side-stage">
+    <span class="side-lbl" id="stageSideLbl">Zijaanzicht</span>
+    <svg id="side" viewBox="-16 0 296 74" role="img" aria-label="Zijaanzicht anker en ketting">
+      <rect x="-16" y="0" width="296" height="20" fill="var(--surface)"/>
+      <rect x="-16" y="20" width="296" height="30" fill="var(--water)"/>
+      <rect x="-16" y="50" width="296" height="24" fill="var(--bottom)"/>
+      <line x1="-16" y1="20" x2="280" y2="20" stroke="var(--water-line)" stroke-width="0.8"/>
+      <line x1="11" y1="50" x2="280" y2="50" stroke="var(--land-line)" stroke-width="0.8" stroke-dasharray="3 2"/>
+      <!-- wal loopt schuin het water in (scherpe hoek ~110°), niet meer loodrecht -->
+      <polygon points="-16,0 -6,0 0,20 11,50 -16,50" fill="var(--land)"/>
+      <polyline points="-6,0 0,20 11,50" fill="none" stroke="var(--land-line)" stroke-width="1"/>
+      <text id="sWalSide" x="-9" y="12" text-anchor="middle" class="t-strong halo" style="font-size:5px;letter-spacing:.1em" transform="rotate(-90 -9 12)">WAL</text>
+      <text id="sWaterlijn" x="274" y="17" text-anchor="end" class="t-lbl halo" style="font-size:4.4px">waterlijn</text>
+      <text id="sBodem" x="274" y="48" text-anchor="end" class="t-lbl halo" style="font-size:4.4px">bodem</text>
+
+      <g id="kvbHintSide" class="fade" opacity="0">
+        <rect x="0" y="9" width="185" height="9" rx="1" fill="var(--kvb)" opacity="0.5"/>
+        <rect x="163" y="4" width="16" height="6" rx="1" fill="var(--kvb)" opacity="0.5"/>
+        <text id="sKvbHint" x="92" y="8" text-anchor="middle" class="halo" style="font-size:4px;fill:var(--teal)">KVB 185 m langszij (SB)</text>
+      </g>
+
+      <path id="bowChainSide" d="" fill="none" stroke="var(--gold)" stroke-width="0.9" stroke-dasharray="1.4 1.2" opacity="0"/>
+      <path id="sternChainSide" d="" fill="none" stroke="var(--gold)" stroke-width="0.9" stroke-dasharray="1.4 1.2" opacity="0"/>
+      <g id="bowAnchorSide" opacity="0"><path d="M-1.6,-2.2 L1.6,-2.2 M0,-2.6 L0,3 M-2.4,1.6 Q0,4.6 2.4,1.6" fill="none" stroke="var(--gold)" stroke-width="1.1"/></g>
+      <g id="sternAnchorSide" opacity="0"><path d="M-1.6,-2.2 L1.6,-2.2 M0,-2.6 L0,3 M-2.4,1.6 Q0,4.6 2.4,1.6" fill="none" stroke="var(--gold)" stroke-width="1.1"/></g>
+      <circle id="bowSplash" cx="8" cy="20" r="2" fill="none" stroke="var(--water-line)" stroke-width="0.9" opacity="0"/>
+      <circle id="sternSplash" cx="222" cy="20" r="2" fill="none" stroke="var(--water-line)" stroke-width="0.9" opacity="0"/>
+
+      <g id="gSetSide">
+        <path d="M6,13 L148,13 L153,13 L154,18 L150,24 L4,24 L0,18 L1,13 Z" fill="var(--barge)" stroke="var(--barge-line)" stroke-width="0.7"/>
+        <rect x="20" y="9" width="114" height="4.2" rx="1" fill="var(--barge)" stroke="var(--barge-line)" stroke-width="0.5"/>
+        <text id="sBakSide" x="77" y="21" text-anchor="middle" class="t-lbl" style="font-size:4.6px;fill:var(--bak-ink);opacity:.7">duwbakken (zijkant)</text>
+      </g>
+    </svg>
+  </div><!-- /side-stage -->
+  </div><!-- /col-anim -->
+
+  <aside class="panel2">
+    <p class="kicker" id="kicker">Stap 1</p>
+    <h2 id="stepTitle">—</h2>
+    <p class="d" id="stepDesc">—</p>
+    <div class="tip"><span class="tx"><b id="tipLabel">Aan boord — let op</b><span id="stepTip">—</span></span></div>
+    <div class="ros">
+      <div class="r"><span class="lab" id="roWalLab">Kop → wal</span><span class="val" id="roWal">—</span></div>
+      <div class="r"><span class="lab" id="roVoorLab">Ketting vóór</span><span class="val gold" id="roVoor">—</span></div>
+      <div class="r"><span class="lab" id="roAchterLab">Ketting achter</span><span class="val gold" id="roAchter">—</span></div>
+    </div>
+    <div class="steps2" id="steps"></div>
+  </aside>
+</div><!-- /app -->
+
+<script>
+(function(){
+  "use strict";
+  var L=154, MID=108, KVB_DX=0, KVB_DY=-11.25;
+
+  var I18N={
+    nl:{
+      voiceLang:"nl-NL", tipWord:"Let op",
+      brand:"Dintelhaven · Nautische instructie",
+      title:"Twee duwbakken voor anker leggen",
+      sub:"Stap voor stap: een lange formatie van twee Europa II-duwbakken (elk 76,5 m) met het koppelverband (KVB, 185 m) aan stuurboord langszij, veilig voor twee ankers gelegd in de Dintelhaven — voor bemanning die dit niet vaak doet.",
+      prev:"◀ Vorige", next:"Volgende ▶", play:"▶ Afspelen", pause:"❚❚ Pauze", replay:"↺ Opnieuw afspelen", restart:"↺ Opnieuw",
+      speed:"Snelheid", stepWord:"Stap", theme:"Licht / donker", khint:"spatie = afspelen · ◀ ▶ = stap",
+      voice:"🔊 Voorlezen", voiceOn:"🔊 Voorlezen aan", wind:"💨 Wind & stroom", windOn:"💨 Wind & stroom aan",
+      overlay:"▶ Start de instructie", stageTop:"Bovenaanzicht — Dintelhaven", stageSide:"Zijaanzicht — dwarsdoorsnede (anker & ketting)",
+      roWal:"Kop → wal", roVoor:"Ketting vóór", roAchter:"Ketting achter", tipLabel:"Aan boord — let op",
+      legendTitle:"Legenda", safetyTitle:"Veiligheidspunten",
+      legend:["Duwbak (onbemand, geen motor) — aan bakboord (BB)","Motorschip / koppelverband (KVB) — aan stuurboord (SB)","Anker met ketting op de bodem","Bewegingsrichting van de set","Lege bakkenplaats (ankerplaats)"],
+      safety:["Nader de bakkenplaats met minimale vaart; houd rekening met stroming en wind.","Laat een anker nooit vallen zolang er nog te veel vaart in de set zit.","Vier de ketting gecontroleerd — laat hem niet met een klap uitlopen.","Controleer dat beide ankers krabvrij houden vóór je het KVB losmaakt.","Houd voldoende afstand tot de wal en tot langsvarende scheepvaart."],
+      footer:"Vereenvoudigde weergave voor instructiedoeleinden — afstanden en afmetingen zijn niet op ware schaal met de werkelijke haven. Volg altijd de instructies van de schipper en de geldende voorschriften. Manoeuvre: kop 5–10 m van de wal → voor ankeren (60 m ketting) → 60 m achteruit → achter ankeren → 30 m vooruit en voor 30 m inhalen (beide ankers 30 m) → KVB (stuurboord) loskoppelen en naar de ertskade.",
+      svg:{wal:"WAL", erts:"ERTSKADE", kolenkade:"KOLENKADE", ertsSub:"hier laadt het KVB erts", open:"◤ vanuit open water", kop:"KOP", stroom:"STROOM ▸", stroomNote:"(voorbeeld)", wind:"WIND", waterlijn:"waterlijn", bodem:"bodem", kvbHint:"KVB 185 m langszij (SB) — kop gelijk, achter ~31 m uit", bakSide:"duwbakken (zijkant)", kvbLabel:"KVB · KOPPELVERBAND · 185 m", finalLbl:"BLIJVEN VOOR ANKER LIGGEN", back:"ACHTERUIT · 60 m vieren", fwd:"VOORUIT 30 m · voor inhalen"},
+      steps:[
+        {short:"Aanvaren", title:"Aanvaren naar de bakkenplaats", desc:"Het koppelverband met de twee duwbakken in lange formatie komt vanuit het open water de Dintelhaven binnen en stuurt naar de lege bakkenplaats. Het motorschip (KVB) ligt aan stuurboord (SB) langszij en verzorgt de voortstuwing en de besturing; de twee bakken liggen aan bakboord (BB).", tip:"Nader met minimale vaart en houd rekening met wind en stroming."},
+        {short:"Stilleggen", title:"Kop stilleggen op 5–10 m van de wal", desc:"Leg de kop van de duwbakken tot stilstand op 5 à 10 meter van de wal. Breng de set recht voor de plaats en neem de vaart er nagenoeg volledig uit.", tip:"Sta stil vóór je het eerste anker laat vallen — nooit ankeren met te veel vaart."},
+        {short:"Anker voor", title:"Voorop het eerste anker laten vallen", desc:"Laat vooraan, op de kop, het eerste anker vallen. Dit vooranker heeft 60 meter ketting beschikbaar. Het anker zakt naar de bodem en pakt straks vanzelf tijdens het achteruitlopen.", tip:"Meld ‘anker voor is gevallen’ en houd de kettingteller in de gaten."},
+        {short:"60 m achteruit", title:"60 m achteruit — voorketting vieren", desc:"Loop met de hele set 60 meter achteruit en vier daarbij de volledige 60 meter voorketting gecontroleerd uit. De set komt strak op de ketting te liggen en het vooranker graaft zich in.", tip:"Vier gelijkmatig — laat de ketting niet met een klap uitschieten."},
+        {short:"Anker achter", title:"Achterop het tweede anker laten vallen", desc:"Laat nu achteraan het tweede anker in het water vallen, precies op de plek waar de achterkant van de set op dit moment ligt.", tip:"Controleer dat het achteranker vrij en recht kan vallen."},
+        {short:"30 m vooruit", title:"30 m vooruit — achter vieren, voor inhalen", desc:"Vier op het achteranker 30 meter ketting en loop met de hele set 30 meter vooruit; haal tegelijk vooraan 30 meter ketting in. Beide ankers staan nu met 30 meter ketting — de set ligt strak tussen twee ankers, voor én achter vast.", tip:"Houd voor- en achterketting in balans zodat de set precies op zijn plaats blijft."},
+        {short:"Loskoppelen", title:"Koppelverband losmaken", desc:"Maak de koppeldraden tussen het motorschip en de duwbakken los. Controleer eerst nog een keer of beide ankers goed houden en de set niet krabt.", tip:"Pas losmaken als je zeker weet dat de bakken blijven liggen."},
+        {short:"Klaar", title:"Klaar — KVB weg, bakken voor anker", desc:"Het motorschip vaart aan stuurboord weg naar de ertskade om te laden. De twee duwbakken blijven zelfstandig tussen de twee ankers liggen (elk 30 meter ketting), voor en achter vast en op ruime afstand van de wal.", tip:"Houd bij het wegvaren afstand van de liggende bakken en let op andere scheepvaart; blijf controleren of de set niet verloopt of krabt."}
+      ]
+    },
+    de:{
+      voiceLang:"de-DE", tipWord:"Achtung",
+      brand:"Dintelhaven · Nautische Anleitung",
+      title:"Zwei Schubleichter vor Anker legen",
+      sub:"Schritt für Schritt: eine lange Formation aus zwei Europa-II-Schubleichtern (je 76,5 m) mit dem Koppelverband (KVB, 185 m) längsseits an Steuerbord, sicher vor zwei Ankern im Dintelhaven — für Besatzungen, die das selten machen.",
+      prev:"◀ Zurück", next:"Weiter ▶", play:"▶ Abspielen", pause:"❚❚ Pause", replay:"↺ Erneut abspielen", restart:"↺ Neu",
+      speed:"Tempo", stepWord:"Schritt", theme:"Hell / dunkel", khint:"Leertaste = abspielen · ◀ ▶ = Schritt",
+      voice:"🔊 Vorlesen", voiceOn:"🔊 Vorlesen an", wind:"💨 Wind & Strömung", windOn:"💨 Wind & Strömung an",
+      overlay:"▶ Anleitung starten", stageTop:"Draufsicht — Dintelhaven", stageSide:"Seitenansicht — Querschnitt (Anker & Kette)",
+      roWal:"Bug → Ufer", roVoor:"Kette vorn", roAchter:"Kette hinten", tipLabel:"An Bord — Achtung",
+      legendTitle:"Legende", safetyTitle:"Sicherheitshinweise",
+      legend:["Schubleichter (unbemannt, kein Antrieb) — an Backbord (BB)","Motorschiff / Koppelverband (KVB) — an Steuerbord (SB)","Anker mit Kette am Grund","Bewegungsrichtung des Verbands","Leerer Leichterliegeplatz (Ankerplatz)"],
+      safety:["Nähere dich dem Liegeplatz mit minimaler Fahrt; berücksichtige Strömung und Wind.","Lass niemals einen Anker fallen, solange noch zu viel Fahrt im Verband ist.","Fiere die Kette kontrolliert — lass sie nicht mit einem Ruck auslaufen.","Prüfe, dass beide Anker halten (nicht schleifen), bevor du das KVB löst.","Halte ausreichend Abstand zum Ufer und zur vorbeifahrenden Schifffahrt."],
+      footer:"Vereinfachte Darstellung zu Schulungszwecken — Abstände und Maße sind nicht maßstabsgetreu zum echten Hafen. Befolge stets die Anweisungen des Schiffsführers und die geltenden Vorschriften. Manöver: Bug 5–10 m vom Ufer → vorn ankern (60 m Kette) → 60 m zurück → hinten ankern → 30 m vor und vorn 30 m einholen (beide Anker 30 m) → KVB (Steuerbord) abkoppeln und zur Erzkai.",
+      svg:{wal:"UFER", erts:"ERZKAI", kolenkade:"KOHLENKAI", ertsSub:"hier lädt das KVB Erz", open:"◤ aus offenem Wasser", kop:"BUG", stroom:"STRÖMUNG ▸", stroomNote:"(Beispiel)", wind:"WIND", waterlijn:"Wasserlinie", bodem:"Grund", kvbHint:"KVB 185 m längsseits (SB) — Bug bündig, hinten ~31 m über", bakSide:"Schubleichter (Seite)", kvbLabel:"KVB · KOPPELVERBAND · 185 m", finalLbl:"BLEIBEN VOR ANKER LIEGEN", back:"ZURÜCK · 60 m fieren", fwd:"VOR 30 m · vorn einholen"},
+      steps:[
+        {short:"Anfahren", title:"Anfahrt zum Leichterliegeplatz", desc:"Der Koppelverband mit den zwei Schubleichtern in langer Formation läuft aus dem offenen Wasser in den Dintelhaven ein und steuert zum leeren Leichterliegeplatz. Das Motorschiff (KVB) liegt an Steuerbord (SB) längsseits und sorgt für Antrieb und Steuerung; die zwei Leichter liegen an Backbord (BB).", tip:"Mit minimaler Fahrt annähern und Wind und Strömung berücksichtigen."},
+        {short:"Stoppen", title:"Bug 5–10 m vor dem Ufer stoppen", desc:"Bring den Bug der Schubleichter 5 bis 10 Meter vor dem Ufer zum Stillstand. Stelle den Verband gerade vor den Liegeplatz und nimm die Fahrt nahezu vollständig heraus.", tip:"Stillstehen, bevor der erste Anker fällt — niemals mit zu viel Fahrt ankern."},
+        {short:"Anker vorn", title:"Vorn den ersten Anker fallen lassen", desc:"Lass vorn, am Bug, den ersten Anker fallen. Dieser Buganker hat 60 Meter Kette zur Verfügung. Der Anker sinkt zum Grund und greift später beim Zurücklaufen von selbst.", tip:"Melde ‚Anker vorn gefallen‘ und behalte den Kettenzähler im Auge."},
+        {short:"60 m zurück", title:"60 m zurück — vordere Kette fieren", desc:"Laufe mit dem ganzen Verband 60 Meter zurück und fiere dabei die vollen 60 Meter der vorderen Kette kontrolliert aus. Der Verband kommt straff auf die Kette und der Buganker gräbt sich ein.", tip:"Gleichmäßig fieren — die Kette nicht mit einem Ruck auslaufen lassen."},
+        {short:"Anker hinten", title:"Hinten den zweiten Anker fallen lassen", desc:"Lass jetzt hinten den zweiten Anker ins Wasser fallen, genau an der Stelle, wo das Heck des Verbands gerade liegt.", tip:"Prüfe, dass der Heckanker frei und gerade fallen kann."},
+        {short:"30 m vor", title:"30 m vor — hinten fieren, vorn einholen", desc:"Fiere am Heckanker 30 Meter Kette und laufe mit dem ganzen Verband 30 Meter vor; hole gleichzeitig vorn 30 Meter Kette ein. Beide Anker stehen nun mit 30 Meter Kette — der Verband liegt straff zwischen zwei Ankern, vorn und hinten fest.", tip:"Halte vordere und hintere Kette im Gleichgewicht, damit der Verband genau an seinem Platz bleibt."},
+        {short:"Abkoppeln", title:"Koppelverband lösen", desc:"Löse die Koppeldrähte zwischen dem Motorschiff und den Schubleichtern. Prüfe zuvor noch einmal, ob beide Anker gut halten und der Verband nicht treibt.", tip:"Erst lösen, wenn du sicher bist, dass die Leichter liegen bleiben."},
+        {short:"Fertig", title:"Fertig — KVB weg, Leichter vor Anker", desc:"Das Motorschiff fährt an Steuerbord weg zur Erzkai, um zu laden. Die zwei Schubleichter bleiben selbstständig zwischen den zwei Ankern liegen (je 30 Meter Kette), vorn und hinten fest und mit reichlich Abstand zum Ufer.", tip:"Beim Wegfahren Abstand zu den liegenden Leichtern halten und auf andere Schifffahrt achten; weiter prüfen, ob der Verband nicht verläuft."}
+      ]
+    },
+    en:{
+      voiceLang:"en-GB", tipWord:"Note",
+      brand:"Dintelhaven · Nautical instruction",
+      title:"Anchoring two barges",
+      sub:"Step by step: a long formation of two Europa II barges (76.5 m each) with the coupled unit (KVB, 185 m) alongside to starboard, safely moored at two anchors in the Dintelhaven — for crews who rarely do this.",
+      prev:"◀ Previous", next:"Next ▶", play:"▶ Play", pause:"❚❚ Pause", replay:"↺ Play again", restart:"↺ Restart",
+      speed:"Speed", stepWord:"Step", theme:"Light / dark", khint:"space = play · ◀ ▶ = step",
+      voice:"🔊 Read aloud", voiceOn:"🔊 Read aloud on", wind:"💨 Wind & current", windOn:"💨 Wind & current on",
+      overlay:"▶ Start the instruction", stageTop:"Top view — Dintelhaven", stageSide:"Side view — cross-section (anchor & chain)",
+      roWal:"Bow → shore", roVoor:"Chain fwd", roAchter:"Chain aft", tipLabel:"On board — note",
+      legendTitle:"Legend", safetyTitle:"Safety points",
+      legend:["Barge (unmanned, no engine) — on port (BB)","Motor vessel / coupled unit (KVB) — on starboard (SB)","Anchor with chain on the bottom","Direction of movement of the unit","Empty barge berth (anchorage)"],
+      safety:["Approach the berth at minimum speed; account for current and wind.","Never let an anchor go while there is still too much way on the unit.","Pay out the chain under control — don’t let it run out with a jerk.","Check that both anchors are holding (not dragging) before casting off the KVB.","Keep enough distance from the shore and from passing traffic."],
+      footer:"Simplified view for instruction purposes — distances and dimensions are not to scale with the real harbour. Always follow the skipper’s instructions and the applicable regulations. Manoeuvre: bow 5–10 m from the shore → drop bow anchor (60 m chain) → 60 m astern → drop stern anchor → 30 m ahead and heave in 30 m forward (both anchors 30 m) → uncouple the KVB (starboard) and head for the ore quay.",
+      svg:{wal:"SHORE", erts:"ORE QUAY", kolenkade:"COAL QUAY", ertsSub:"the KVB loads ore here", open:"◤ from open water", kop:"BOW", stroom:"CURRENT ▸", stroomNote:"(example)", wind:"WIND", waterlijn:"waterline", bodem:"bottom", kvbHint:"KVB 185 m alongside (SB) — bow flush, ~31 m aft overhang", bakSide:"barges (side view)", kvbLabel:"KVB · COUPLED UNIT · 185 m", finalLbl:"STAY AT ANCHOR", back:"ASTERN · pay out 60 m", fwd:"AHEAD 30 m · heave in forward"},
+      steps:[
+        {short:"Approach", title:"Approaching the barge berth", desc:"The coupled unit with the two barges in long formation enters the Dintelhaven from open water and heads for the empty barge berth. The motor vessel (KVB) is coupled alongside to starboard (SB) and provides propulsion and steering; the two barges are on the port side (BB).", tip:"Approach at minimum speed and account for wind and current."},
+        {short:"Stop", title:"Stop the bow 5–10 m from the shore", desc:"Bring the bow of the barges to a stop 5 to 10 metres from the quay wall. Line the unit up square with the berth and take almost all the way off.", tip:"Come to a stop before dropping the first anchor — never anchor with too much way on."},
+        {short:"Bow anchor", title:"Drop the first anchor forward", desc:"Drop the first anchor forward, at the bow. This bow anchor has 60 metres of chain available. It sinks to the bottom and will dig in by itself as you move astern.", tip:"Report ‘bow anchor let go’ and keep an eye on the chain counter."},
+        {short:"60 m astern", title:"60 m astern — pay out the bow chain", desc:"Move the whole unit 60 metres astern, paying out the full 60 metres of bow chain under control. The unit comes taut on the chain and the bow anchor digs in.", tip:"Pay out evenly — don’t let the chain run out with a jerk."},
+        {short:"Stern anchor", title:"Drop the second anchor aft", desc:"Now drop the second anchor into the water aft, exactly where the stern of the unit currently lies.", tip:"Check that the stern anchor can fall clear and straight."},
+        {short:"30 m ahead", title:"30 m ahead — pay out aft, heave in forward", desc:"Pay out 30 metres of chain on the stern anchor and move the whole unit 30 metres ahead; at the same time heave in 30 metres of bow chain. Both anchors now hold 30 metres of chain — the unit lies taut between two anchors, made fast fore and aft.", tip:"Keep the bow and stern chains balanced so the unit stays exactly in place."},
+        {short:"Uncouple", title:"Uncouple the motor vessel", desc:"Cast off the coupling wires between the motor vessel and the barges. First check once more that both anchors are holding and the unit is not dragging.", tip:"Only cast off once you are sure the barges will stay put."},
+        {short:"Done", title:"Done — KVB away, barges at anchor", desc:"The motor vessel leaves to starboard for the ore quay to load. The two barges stay on their own between the two anchors (30 metres of chain each), made fast fore and aft and well clear of the quay.", tip:"When leaving, keep clear of the moored barges and watch for other traffic; keep checking the unit isn’t dragging."}
+      ]
+    }
+  };
+
+  var DUR=[6.0,2.8,3.2,5.2,3.2,5.2,3.2,5.4];
+  var LAST=DUR.length-1;
+
+  var els={};
+  ["overlay","overlayTxt","playBtn","prevBtn","nextBtn","restartBtn","speedSel","langSel",
+   "stepNum","stepWord","kicker","stepTitle","stepDesc","stepTip","tipLabel","roWal","roVoor","roAchter","roWalLab","roVoorLab","roAchterLab","steps",
+   "stageSideLbl",
+   "gSetTop","gSetSide","gKVBTop","zone","bowAnchorTop","sternAnchorTop","bowChainTop","sternChainTop","wiresTop","setGlow","finalLbl",
+   "measWall","measWallPath","measWallLbl","measBow","measBowPath","measBowLbl","measStern","measSternPath","measSternLbl","arrowG","arrowPath","arrowLbl",
+   "bowChainSide","sternChainSide","bowAnchorSide","sternAnchorSide","bowSplash","sternSplash","kvbHintSide",
+   "kvbWash","kvbBow","setBow",
+   "voiceBtn","scrub","stepTotal",
+   "sErts","sKolenkade","sWal","sWalSide","sKop","sWaterlijn","sBodem","sKvbHint","sBakSide","sKvbLabel"
+  ].forEach(function(id){els[id]=document.getElementById(id);});
+
+  var lang="nl";
+  try{ var sl=localStorage.getItem("dh-anker-lang"); if(sl&&I18N[sl]) lang=sl; }catch(e){}
+  function t(){ return I18N[lang]; }
+  function steps(){ return I18N[lang].steps; }
+
+  // chips
+  var chips=[];
+  for(var i=0;i<DUR.length;i++){
+    (function(idx){
+      var c=document.createElement("button");
+      c.className="chip"; c.type="button";
+      c.addEventListener("click",function(){ goToStep(idx); });
+      els.steps.appendChild(c);
+      chips.push(c);
+    })(i);
+  }
+  // coupling wires
+  var wiresHtml="";
+  [15,50,85,120,150].forEach(function(x){ wiresHtml+='<line x1="'+x+'" y1="-5.7" x2="'+x+'" y2="-6.5" stroke="var(--kvb-line)" stroke-width="0.8"/>'; });
+  els.wiresTop.innerHTML=wiresHtml;
+
+  var phase=0, p=1, playing=false, speed=2, hasStarted=false, lastTs=null;
+  var voiceOn=false;
+
+  function lerp(a,b,tt){return a+(b-a)*tt;}
+  function clamp(v,a,b){return v<a?a:(v>b?b:v);}
+  function easeIO(tt){return tt<0.5?2*tt*tt:1-Math.pow(-2*tt+2,2)/2;}
+  function easeOut(tt){return 1-Math.pow(1-tt,2);}
+  function bez(p0,c,p1,tt){var u=1-tt;return{x:u*u*p0.x+2*u*tt*c.x+tt*tt*p1.x, y:u*u*p0.y+2*u*tt*c.y+tt*tt*p1.y};}
+  function bowXFor(ph,pp){
+    switch(ph){
+      case 0: return 8; case 1: return 8; case 2: return 8;
+      case 3: return lerp(8,68,easeIO(pp));
+      case 4: return 68;
+      case 5: return lerp(68,38,easeIO(pp));
+      default: return 38;
+    }
+  }
+  function fleetPose(ph,pp){
+    if(ph===0){ var e=easeOut(pp); return {fx:lerp(260,8,e), fy:lerp(100,MID,e), rot:lerp(5,0,e)}; }
+    return {fx:bowXFor(ph,pp), fy:MID, rot:0};
+  }
+  function bracket(x1,x2,y){ return "M"+x1+","+(y-2)+" L"+x1+","+(y+2)+" M"+x1+","+y+" L"+x2+","+y+" M"+x2+","+(y-2)+" L"+x2+","+(y+2); }
+  // Kettingspanning: 1 bij u=0 (slap), oscilleert en dempt naar 0 (strak) bij u=1
+  function snapOsc(u,cycles){ return (1-u)*(0.5+0.5*Math.cos(2*Math.PI*cycles*u)); }
+  function bowSag(ph,pp,bowX){
+    if(ph<3) return 0;
+    if(ph===3){
+      if(pp<0.6) return 3*clamp((bowX-8)/60,0,1)*0.5;   // licht slap tijdens vieren
+      return 3.4*snapOsc((pp-0.6)/0.4,3);               // 3× strak/slap, dempt strak
+    }
+    if(ph===4) return 0.5;
+    if(ph===5){ if(pp<0.6) return 0.5; return 1.8*snapOsc((pp-0.6)/0.4,2); } // laatste zetten
+    return 0.5;
+  }
+  function sternSag(ph,pp,sternX){
+    if(ph<4) return 0;
+    if(ph===4) return 0.4;
+    if(ph===5){
+      if(pp<0.6) return 3*clamp((222-sternX)/30,0,1)*0.6;
+      return 2.6*snapOsc((pp-0.6)/0.4,3);
+    }
+    return 0.5;
+  }
+
+  function refreshToggleLabels(){
+    els.voiceBtn.textContent = "🔊";
+    els.voiceBtn.title = voiceOn ? t().voiceOn : t().voice;
+  }
+
+  function applyLang(){
+    var d=t();
+    document.documentElement.lang=lang;
+    els.stepWord.textContent=d.stepWord;
+    els.overlayTxt.textContent=d.overlay; els.stageSideLbl.textContent=d.stageSide;
+    els.roWalLab.textContent=d.roWal; els.roVoorLab.textContent=d.roVoor; els.roAchterLab.textContent=d.roAchter; els.tipLabel.textContent=d.tipLabel;
+    // svg statics
+    els.sErts.textContent=d.svg.erts; els.sKolenkade.textContent=d.svg.kolenkade; els.sWal.textContent=d.svg.wal; els.sWalSide.textContent=d.svg.wal;
+    els.sKop.textContent=d.svg.kop; els.sWaterlijn.textContent=d.svg.waterlijn;
+    els.sBodem.textContent=d.svg.bodem; els.sKvbHint.textContent=d.svg.kvbHint; els.sBakSide.textContent=d.svg.bakSide;
+    els.sKvbLabel.textContent=d.svg.kvbLabel; els.finalLbl.textContent=d.svg.finalLbl;
+    // chips
+    for(var i=0;i<chips.length;i++){ chips[i].innerHTML='<span class="n">'+(i+1)+'</span> '+d.steps[i].short; }
+    refreshToggleLabels();
+    render();
+  }
+
+  function render(){
+    var ph=phase, pp=p, d=t();
+    var pose=fleetPose(ph,pp);
+    var bowX=(ph===0)?8:bowXFor(ph,pp);
+    var sternX=bowX+L;
+    var fleetT="translate("+pose.fx+" "+pose.fy+") rotate("+pose.rot+")";
+    els.gSetTop.setAttribute("transform",fleetT);
+    els.gSetSide.setAttribute("transform","translate("+bowX+" 0)");
+
+    var cx=42.5, cy=4.75;
+    if(ph<=5){ els.gKVBTop.setAttribute("transform",fleetT+" translate("+KVB_DX+" "+KVB_DY+")"); }
+    else if(ph===6){ var e=easeIO(pp); els.gKVBTop.setAttribute("transform","translate("+(bowX+KVB_DX)+" "+((MID+KVB_DY)-8*e)+") rotate("+(3*e)+")"); }
+    else { var tr=(ph===7)?easeIO(pp):1; var pt=bez({x:bowX+KVB_DX,y:(MID+KVB_DY)-8},{x:30,y:55},{x:35,y:20},tr); els.gKVBTop.setAttribute("transform","translate("+pt.x+" "+pt.y+") rotate("+(3*(1-tr))+")"); }
+
+    els.wiresTop.style.opacity = ph<=5?1:(ph===6?(1-pp):0);
+    els.kvbHintSide.style.opacity = (ph<=5?0.55:(ph===6?0.55*(1-pp):0));
+    if(ph<=6){ els.kvbHintSide.setAttribute("transform","translate("+(bowX+KVB_DX)+" 0)"); }
+    els.zone.style.opacity = ph===0 ? lerp(1,0.55,pp) : 0.55;
+
+    var bsag=bowSag(ph,pp,bowX), ssag=sternSag(ph,pp,sternX);
+    var bowDeployed = ph>=2;
+    els.bowAnchorTop.style.opacity = ph<2?0:(ph===2?clamp(pp*2,0,1):1);
+    els.bowChainTop.style.opacity = bowDeployed?1:0;
+    if(bowDeployed) els.bowChainTop.setAttribute("d","M8,"+MID+" Q"+((8+bowX)/2)+","+(MID+bsag)+" "+bowX+","+MID);
+    var bowDrop = ph<2?-1:(ph===2?pp:1);
+    if(bowDrop>=0){
+      var ay=lerp(13,49,easeIO(bowDrop));
+      var bMid=(14+(ay-0.5))/2;
+      els.bowAnchorSide.setAttribute("transform","translate(8 "+ay+")"); els.bowAnchorSide.style.opacity=1; els.bowChainSide.style.opacity=1;
+      els.bowChainSide.setAttribute("d","M"+bowX+",14 Q"+((bowX+8)/2)+","+(bMid+1+bsag*1.3)+" 8,"+(ay-0.5));
+      els.bowSplash.style.opacity = ph===2 ? clamp(1-Math.abs(bowDrop-0.15)/0.22,0,1)*0.9 : 0;
+    } else { els.bowAnchorSide.style.opacity=0; els.bowChainSide.style.opacity=0; els.bowSplash.style.opacity=0; }
+
+    var sternDeployed = ph>=4;
+    els.sternAnchorTop.style.opacity = ph<4?0:(ph===4?clamp(pp*2,0,1):1);
+    els.sternChainTop.style.opacity = sternDeployed?1:0;
+    if(sternDeployed) els.sternChainTop.setAttribute("d","M"+sternX+","+MID+" Q"+((sternX+222)/2)+","+(MID+ssag)+" 222,"+MID);
+    var sternDrop = ph<4?-1:(ph===4?pp:1);
+    if(sternDrop>=0){
+      var say=lerp(13,49,easeIO(sternDrop));
+      var sMid=(14+(say-0.5))/2;
+      els.sternAnchorSide.setAttribute("transform","translate(222 "+say+")"); els.sternAnchorSide.style.opacity=1; els.sternChainSide.style.opacity=1;
+      els.sternChainSide.setAttribute("d","M"+sternX+",14 Q"+((sternX+222)/2)+","+(sMid+1+ssag*1.3)+" 222,"+(say-0.5));
+      els.sternSplash.style.opacity = ph===4 ? clamp(1-Math.abs(sternDrop-0.15)/0.22,0,1)*0.9 : 0;
+    } else { els.sternAnchorSide.style.opacity=0; els.sternChainSide.style.opacity=0; els.sternSplash.style.opacity=0; }
+
+    var showWall=(ph===1||ph===2);
+    els.measWall.style.opacity=showWall?1:0;
+    if(showWall){ els.measWallPath.setAttribute("d",bracket(0,bowX,100)); els.measWallLbl.setAttribute("x",bowX/2); els.measWallLbl.setAttribute("y",97.5); els.measWallLbl.textContent="5–10 m"; }
+    // voorketting: 60 m tijdens achteruit (stap 3), daarna blijvend 30 m zichtbaar (stap 5 t/m eind)
+    var showBow=(ph===3||ph>=5);
+    els.measBow.style.opacity=showBow?1:0;
+    if(showBow){ els.measBowPath.setAttribute("d",bracket(8,bowX,101)); els.measBowLbl.setAttribute("x",(8+bowX)/2); els.measBowLbl.setAttribute("y",98.5); els.measBowLbl.textContent=Math.round(bowX-8)+" m"; }
+    // achterketting: blijvend 30 m zichtbaar vanaf stap 5, ook als het KVB vertrekt
+    var showStern=(ph>=5);
+    els.measStern.style.opacity=showStern?1:0;
+    if(showStern){ els.measSternPath.setAttribute("d",bracket(sternX,222,101)); els.measSternLbl.setAttribute("x",(sternX+222)/2); els.measSternLbl.setAttribute("y",98.5); els.measSternLbl.textContent=Math.round(222-sternX)+" m"; }
+
+    if(ph===3){ els.arrowG.style.opacity=1; els.arrowPath.setAttribute("d","M96,121 L144,121 M144,121 L138,118.5 M144,121 L138,123.5"); els.arrowLbl.setAttribute("x",120); els.arrowLbl.setAttribute("y",129); els.arrowLbl.textContent=d.svg.back; }
+    else if(ph===5){ els.arrowG.style.opacity=1; els.arrowPath.setAttribute("d","M112,121 L64,121 M64,121 L70,118.5 M64,121 L70,123.5"); els.arrowLbl.setAttribute("x",88); els.arrowLbl.setAttribute("y",129); els.arrowLbl.textContent=d.svg.fwd; }
+    else { els.arrowG.style.opacity=0; }
+
+    // geen oranje stippellijn meer — alleen de tekst blijft staan
+    els.setGlow.style.opacity=0; els.finalLbl.style.opacity = ph===7?easeIO(pp):0;
+
+    // schroefwater + boeggolf (alleen tijdens varen)
+    var sinp=Math.sin(Math.PI*clamp(pp,0,1));
+    var washF = ph===0?clamp(1-pp,0,1) : ((ph===3||ph===5||ph===7)?sinp:0);
+    els.kvbWash.style.opacity=washF;
+    els.kvbWash.setAttribute("transform", ph===3 ? "translate(370 0) scale(-1 1)" : "translate(0 0)"); // achteruit: schroefwater naar voren
+    els.setBow.style.opacity = ph===0?clamp(1-pp,0,1) : (ph===5?sinp:0);
+    els.kvbBow.style.opacity = ph===7?sinp:0;
+
+    var m=d.steps[ph];
+    els.kicker.textContent=d.stepWord+" "+(ph+1);
+    els.stepTitle.textContent=m.title; els.stepDesc.textContent=m.desc; els.stepTip.textContent=m.tip;
+    els.stepNum.textContent=(ph+1);
+    els.roWal.textContent=Math.round(bowX)+" m";
+    els.roVoor.textContent = ph>=2 ? Math.max(0,Math.round(bowX-8))+" m" : "—";
+    els.roAchter.textContent = ph>=4 ? Math.max(0,Math.round(222-sternX))+" m" : "—";
+    for(var i=0;i<chips.length;i++){ chips[i].classList.toggle("active", i===ph); chips[i].classList.toggle("done", i<ph); }
+    els.playBtn.textContent = playing ? "❚❚" : (ph===LAST && p>=1 ? "↺" : "▶");
+    try{ els.scrub.value=Math.round((ph+Math.min(p,1))*100); }catch(e){}
+  }
+
+  function speakStep(){
+    if(!('speechSynthesis' in window)) return;
+    try{
+      window.speechSynthesis.cancel();
+      var m=t().steps[phase];
+      var u=new SpeechSynthesisUtterance(m.title+". "+m.desc+" "+t().tipWord+": "+m.tip);
+      u.lang=t().voiceLang; u.rate=1;
+      var vs=window.speechSynthesis.getVoices()||[]; var pre=lang;
+      for(var i=0;i<vs.length;i++){ if(vs[i].lang && vs[i].lang.toLowerCase().indexOf(pre)===0){ u.voice=vs[i]; break; } }
+      window.speechSynthesis.speak(u);
+    }catch(e){}
+  }
+  function maybeSpeak(){ if(voiceOn) speakStep(); }
+
+  function goToStep(i){ playing=false; var old=phase; phase=clamp(i,0,LAST); p=1; lastTs=null; els.overlay.hidden=true; hasStarted=true; render(); if(phase!==old) maybeSpeak(); }
+  function togglePlay(){
+    if(playing){ playing=false; render(); return; }
+    var old=phase;
+    if(phase===LAST && p>=1){ phase=0; p=0; }
+    else if(p>=1 && phase<LAST){ phase++; p=0; }
+    playing=true; hasStarted=true; els.overlay.hidden=true; lastTs=null;
+    if(phase!==old) maybeSpeak();
+  }
+
+  els.playBtn.addEventListener("click",togglePlay);
+  els.overlay.addEventListener("click",togglePlay);
+  els.nextBtn.addEventListener("click",function(){ goToStep(Math.min(phase+1,LAST)); });
+  els.prevBtn.addEventListener("click",function(){ goToStep(Math.max(phase-1,0)); });
+  els.restartBtn.addEventListener("click",function(){ phase=0; p=0; playing=true; hasStarted=true; els.overlay.hidden=true; lastTs=null; maybeSpeak(); });
+  els.speedSel.addEventListener("change",function(){ speed=parseFloat(this.value)||1; });
+
+  els.voiceBtn.addEventListener("click",function(){
+    voiceOn=!voiceOn; this.setAttribute("aria-pressed", voiceOn?"true":"false"); refreshToggleLabels();
+    if(voiceOn){ speakStep(); } else { try{ window.speechSynthesis.cancel(); }catch(e){} }
+  });
+  els.scrub.addEventListener("input",function(){
+    playing=false; try{ window.speechSynthesis.cancel(); }catch(e){}
+    var v=(parseInt(this.value,10)||0)/100;
+    phase=clamp(Math.floor(v),0,LAST); p=clamp(v-phase,0,1);
+    lastTs=null; els.overlay.hidden=true; hasStarted=true; render();
+  });
+  els.langSel.addEventListener("change",function(){
+    lang=this.value; try{ localStorage.setItem("dh-anker-lang",lang); }catch(e){}
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+    applyLang();
+  });
+
+  document.addEventListener("keydown",function(e){
+    var tg=e.target; if(tg && /^(INPUT|SELECT|TEXTAREA)$/.test(tg.tagName)) return;
+    if(e.key===" "||e.code==="Space"){ e.preventDefault(); togglePlay(); }
+    else if(e.key==="ArrowRight"){ e.preventDefault(); goToStep(Math.min(phase+1,LAST)); }
+    else if(e.key==="ArrowLeft"){ e.preventDefault(); goToStep(Math.max(phase-1,0)); }
+    else if(e.key==="Home"){ e.preventDefault(); phase=0; p=0; playing=true; els.overlay.hidden=true; lastTs=null; maybeSpeak(); }
+  });
+
+  function frame(ts){
+    if(playing){
+      if(lastTs==null) lastTs=ts;
+      var dt=(ts-lastTs)/1000; lastTs=ts;
+      p += dt*speed / DUR[phase];
+      var changed=false;
+      while(p>=1){ if(phase<LAST){ p-=1; phase++; changed=true; } else { p-=1; phase=0; changed=true; } } // loopt door tot pauze
+      if(changed) maybeSpeak();
+      render();
+    } else { lastTs=null; }
+    requestAnimationFrame(frame);
+  }
+
+  try{ els.stepTotal.textContent=DUR.length; els.scrub.max=DUR.length*100; }catch(e){}
+  els.langSel.value=lang;
+  applyLang();
+  requestAnimationFrame(frame);
+  // Automatisch starten na 2 seconden (loopt daarna door tot de gebruiker pauzeert)
+  setTimeout(function(){
+    if(!hasStarted){ phase=0; p=0; playing=true; hasStarted=true; els.overlay.hidden=true; lastTs=null; maybeSpeak(); }
+  }, 2000);
+})();
+</script>
+</body>
+</html>

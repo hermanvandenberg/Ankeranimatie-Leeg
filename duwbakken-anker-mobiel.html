@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>Duwbakken voor anker — mobiel</title>
+<meta name="description" content="Kale liggende telefoonversie van de ankermanoeuvre: alleen de tekening en de meters, met de vinger te pauzeren en te spoelen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Lichte thema van de Duwbakkenplanning (v1.283: Inter/JetBrains Mono, warm) */
+  :root{
+    --text:#2B2119; --text-dim:#6F6355; --line:#E8DFD1;
+    --accent:#F26B3A; --accent-ink:#2B2119;
+    --teal:#2563EB; --gold:#7A5F0E; --gold-solid:#7A5F0E;
+    --water:#E3EEF1; --water-line:#AFC9D1; --land:#F1E9DD; --land-line:#D9CDBC;
+    --barge:#93B8C4; --barge-line:#2B4B56; --kvb:#D9CDBC; --kvb-line:#2563EB;
+    --foam:rgba(255,255,255,.92); --bg:#E3EEF1;
+    --display:'Inter',system-ui,sans-serif;
+    --sans:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    color-scheme:light;
+  }
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;font-family:var(--sans)}
+  .stage{position:fixed;inset:0;cursor:grab}
+  .stage:active{cursor:grabbing}
+  .stage svg{position:absolute;inset:0;width:100%;height:100%}
+  .progress{position:fixed;left:0;bottom:0;height:4px;background:var(--accent);width:0%;pointer-events:none;z-index:4}
+  .pill{position:fixed;top:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:color-mix(in srgb,var(--accent) 88%,transparent);color:var(--accent-ink);font-size:19px;opacity:0;transition:opacity .25s ease;pointer-events:none;z-index:5}
+  .pill.show{opacity:1}
+  .rotate{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:var(--bg);color:var(--text);z-index:9}
+  .rotate .icon{font-size:44px;animation:spin 2.4s ease-in-out infinite}
+  @keyframes spin{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(78deg)}}
+  @media (orientation:portrait){ .rotate{display:flex} }
+
+  text{font-family:var(--mono)}
+  .halo{paint-order:stroke;stroke:var(--water);stroke-width:2.4px;stroke-linejoin:round}
+  .baknr{fill:var(--bak-ink,#14181d);opacity:.28;font-weight:700}
+  @keyframes washpulse{0%,100%{opacity:.15}50%{opacity:.75}}
+  @keyframes bowpulse{0%,100%{opacity:.2}50%{opacity:.6}}
+  .wash-el{animation:washpulse .8s ease-in-out infinite}
+  .bow-el{animation:bowpulse 1s ease-in-out infinite}
+  .fade{transition:opacity .3s ease}
+  @media (prefers-reduced-motion:reduce){.wash-el,.bow-el{animation:none}.fade{transition:none}}
+</style>
+
+</head>
+<body>
+<div class="rotate" aria-hidden="true"><div class="icon">📱↻</div></div>
+<div class="pill" id="pill">❚❚</div>
+<div class="progress" id="progress"></div>
+
+<div class="stage" id="stage">
+  <svg id="top" viewBox="-16 -6 296 200" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Ankermanoeuvre duwbakken">
+    <rect x="-60" y="-40" width="420" height="280" fill="var(--water)"/>
+    <defs><pattern id="dots" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="1.2" cy="1.2" r="0.5" fill="var(--text)" opacity="0.06"/></pattern></defs>
+    <rect x="-60" y="-40" width="420" height="280" fill="url(#dots)"/>
+    <!-- ertskade boven -->
+    <rect x="-60" y="-40" width="420" height="48" fill="var(--land)"/>
+    <line x1="-60" y1="8" x2="360" y2="8" stroke="var(--land-line)" stroke-width="0.8"/>
+    <polygon points="150,8 176,-6 214,-6 242,8" fill="var(--gold-solid)" opacity="0.5"/>
+    <polygon points="182,8 198,-3 220,-3 236,8" fill="var(--gold-solid)" opacity="0.4"/>
+    <!-- wal links -->
+    <rect x="-60" y="-40" width="44" height="280" fill="var(--land)"/>
+    <line x1="0" y1="-40" x2="0" y2="240" stroke="var(--land-line)" stroke-width="1"/>
+    <!-- schaalbalk (meters) -->
+    <g transform="translate(20 182)">
+      <line x1="0" y1="0" x2="50" y2="0" stroke="var(--text)" stroke-width="0.7" opacity=".7"/>
+      <line x1="0" y1="-2.4" x2="0" y2="2.4" stroke="var(--text)" stroke-width="0.7" opacity=".7"/>
+      <line x1="50" y1="-2.4" x2="50" y2="2.4" stroke="var(--text)" stroke-width="0.7" opacity=".7"/>
+      <text x="25" y="-3.4" text-anchor="middle" class="halo" style="font-size:5px;fill:var(--text)">50 m</text>
+    </g>
+
+    <!-- bakkenplaats -->
+    <g id="zone" class="fade">
+      <rect x="34" y="100" width="162" height="16.5" rx="2" fill="var(--accent)" fill-opacity="0.05" stroke="var(--accent)" stroke-width="0.8" stroke-dasharray="4 3"/>
+    </g>
+
+    <!-- ankers -->
+    <g id="bowAnchorTop" class="fade" opacity="0" transform="translate(8 108)">
+      <line x1="0" y1="-2.2" x2="0" y2="2.2" stroke="var(--gold)" stroke-width="1.1"/>
+      <circle cx="0" cy="-1.9" r="1.1" fill="none" stroke="var(--gold)" stroke-width="1"/>
+      <path d="M-3.4,0.9 Q0,3.9 3.4,0.9" fill="none" stroke="var(--gold)" stroke-width="1.1"/>
+      <line x1="-1.8" y1="-0.8" x2="1.8" y2="-0.8" stroke="var(--gold)" stroke-width="1.1"/>
+    </g>
+    <g id="sternAnchorTop" class="fade" opacity="0" transform="translate(222 108)">
+      <line x1="0" y1="-2.2" x2="0" y2="2.2" stroke="var(--gold)" stroke-width="1.1"/>
+      <circle cx="0" cy="-1.9" r="1.1" fill="none" stroke="var(--gold)" stroke-width="1"/>
+      <path d="M-3.4,0.9 Q0,3.9 3.4,0.9" fill="none" stroke="var(--gold)" stroke-width="1.1"/>
+      <line x1="-1.8" y1="-0.8" x2="1.8" y2="-0.8" stroke="var(--gold)" stroke-width="1.1"/>
+    </g>
+    <path id="bowChainTop" d="" fill="none" stroke="var(--gold)" stroke-width="1" stroke-dasharray="1.4 1.4" opacity="0"/>
+    <path id="sternChainTop" d="" fill="none" stroke="var(--gold)" stroke-width="1" stroke-dasharray="1.4 1.4" opacity="0"/>
+
+    <!-- KVB -->
+    <g id="gKVBTop">
+      <g id="kvbWash" opacity="0">
+        <path class="wash-el" style="animation-delay:0s" d="M186,-3 q7,1.5 14,0" fill="none" stroke="var(--foam)" stroke-width="1.3" stroke-linecap="round"/>
+        <path class="wash-el" style="animation-delay:.15s" d="M186,0 q9,2 18,0" fill="none" stroke="var(--foam)" stroke-width="1.5" stroke-linecap="round"/>
+        <path class="wash-el" style="animation-delay:.3s" d="M186,3 q7,-1.5 14,0" fill="none" stroke="var(--foam)" stroke-width="1.3" stroke-linecap="round"/>
+        <circle class="wash-el" style="animation-delay:.1s" cx="199" cy="-1.6" r="1" fill="var(--foam)"/>
+        <circle class="wash-el" style="animation-delay:.28s" cx="204" cy="1.6" r="1.2" fill="var(--foam)"/>
+        <circle class="wash-el" style="animation-delay:.42s" cx="209" cy="0" r="0.9" fill="var(--foam)"/>
+      </g>
+      <g id="kvbBow" opacity="0">
+        <path class="bow-el" d="M0,0 Q5,-3.4 11,-7" fill="none" stroke="var(--foam)" stroke-width="1.1" stroke-linecap="round"/>
+        <path class="bow-el" style="animation-delay:.2s" d="M0,0 Q5,3.4 11,7" fill="none" stroke="var(--foam)" stroke-width="1.1" stroke-linecap="round"/>
+      </g>
+      <path d="M6,-4.75 L185,-4.75 L185,4.75 L6,4.75 L0,0 Z" fill="var(--kvb)" stroke="var(--kvb-line)" stroke-width="0.7"/>
+      <rect x="163" y="-3.15" width="16" height="6.3" rx="1" fill="var(--accent)"/>
+      <line x1="171" y1="-3.15" x2="171" y2="-6.4" stroke="var(--kvb-line)" stroke-width="0.7"/>
+    </g>
+
+    <!-- set -->
+    <g id="gSetTop">
+      <rect id="setGlow" x="-2" y="-6" width="158" height="12" rx="2" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="3 2.4" opacity="0"/>
+      <g id="setBow" opacity="0">
+        <path class="bow-el" d="M0,0 Q6,-4 13,-8.5" fill="none" stroke="var(--foam)" stroke-width="1.1" stroke-linecap="round"/>
+        <path class="bow-el" style="animation-delay:.2s" d="M0,0 Q6,4 13,8.5" fill="none" stroke="var(--foam)" stroke-width="1.1" stroke-linecap="round"/>
+        <path class="bow-el" style="animation-delay:.1s" d="M1.5,-1.6 Q7,-3 13,-4.4" fill="none" stroke="var(--foam)" stroke-width="0.7" stroke-linecap="round" opacity="0.7"/>
+        <path class="bow-el" style="animation-delay:.32s" d="M1.5,1.6 Q7,3 13,4.4" fill="none" stroke="var(--foam)" stroke-width="0.7" stroke-linecap="round" opacity="0.7"/>
+      </g>
+      <path d="M6,-5.7 L76.5,-5.7 L76.5,5.7 L6,5.7 L0,0 Z" fill="var(--barge)" stroke="var(--barge-line)" stroke-width="0.7"/>
+      <path d="M77.5,-5.7 L148,-5.7 L154,0 L148,5.7 L77.5,5.7 Z" fill="var(--barge)" stroke="var(--barge-line)" stroke-width="0.7"/>
+      <line x1="10" y1="-5.7" x2="10" y2="5.7" stroke="var(--barge-line)" stroke-width="0.5" opacity="0.6"/>
+    </g>
+
+    <g id="wiresTop" class="fade"></g>
+
+    <!-- meters -->
+    <g id="measWall" class="fade" opacity="0">
+      <path id="measWallPath" d="" fill="none" stroke="var(--teal)" stroke-width="0.7"/>
+      <text id="measWallLbl" class="halo" style="font-size:6px;font-weight:600;fill:var(--teal)" text-anchor="middle">5–10 m</text>
+    </g>
+    <g id="measBow" class="fade" opacity="0">
+      <path id="measBowPath" d="" fill="none" stroke="var(--gold)" stroke-width="0.7"/>
+      <text id="measBowLbl" class="halo" style="font-size:6px;font-weight:600;fill:var(--gold)" text-anchor="middle">60 m</text>
+    </g>
+    <g id="measStern" class="fade" opacity="0">
+      <path id="measSternPath" d="" fill="none" stroke="var(--gold)" stroke-width="0.7"/>
+      <text id="measSternLbl" class="halo" style="font-size:6px;font-weight:600;fill:var(--gold)" text-anchor="middle">30 m</text>
+    </g>
+    <g id="arrowG" class="fade" opacity="0">
+      <path id="arrowPath" d="" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"/>
+    </g>
+  </svg>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var L=154, MID=108, KVB_DX=0, KVB_DY=-11.25;
+  var DUR=[6.0,2.8,3.2,5.2,3.2,5.2,3.2,5.4], LAST=DUR.length-1, N=DUR.length;
+
+  var els={};
+  ["top","stage","pill","progress","gSetTop","gKVBTop","zone","bowAnchorTop","sternAnchorTop",
+   "bowChainTop","sternChainTop","wiresTop","setGlow","kvbWash","kvbBow","setBow",
+   "measWall","measWallPath","measWallLbl","measBow","measBowPath","measBowLbl",
+   "measStern","measSternPath","measSternLbl","arrowG","arrowPath"
+  ].forEach(function(id){els[id]=document.getElementById(id);});
+
+  try{ var th=localStorage.getItem("dh-anker-theme"); if(th) document.documentElement.setAttribute("data-theme",th); }catch(e){}
+
+  var wiresHtml="";
+  [15,50,85,120,150].forEach(function(x){ wiresHtml+='<line x1="'+x+'" y1="-5.7" x2="'+x+'" y2="-6.5" stroke="var(--kvb-line)" stroke-width="0.8"/>'; });
+  els.wiresTop.innerHTML=wiresHtml;
+
+  var phase=0, p=0, playing=true, lastTs=null, dragging=false;
+
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function clamp(v,a,b){return v<a?a:(v>b?b:v);}
+  function easeIO(t){return t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
+  function easeOut(t){return 1-Math.pow(1-t,2);}
+  function bez(p0,c,p1,t){var u=1-t;return{x:u*u*p0.x+2*u*t*c.x+t*t*p1.x, y:u*u*p0.y+2*u*t*c.y+t*t*p1.y};}
+  function bowXFor(ph,pp){
+    switch(ph){ case 0: return 8; case 1: return 8; case 2: return 8;
+      case 3: return lerp(8,68,easeIO(pp)); case 4: return 68;
+      case 5: return lerp(68,38,easeIO(pp)); default: return 38; }
+  }
+  function fleetPose(ph,pp){
+    if(ph===0){ var e=easeOut(pp); return {fx:lerp(212,8,e), fy:lerp(168,MID,e), rot:lerp(30,0,e)}; }
+    return {fx:bowXFor(ph,pp), fy:MID, rot:0};
+  }
+  function bracket(x1,x2,y){ return "M"+x1+","+(y-2.4)+" L"+x1+","+(y+2.4)+" M"+x1+","+y+" L"+x2+","+y+" M"+x2+","+(y-2.4)+" L"+x2+","+(y+2.4); }
+  function snapOsc(u,c){ return (1-u)*(0.5+0.5*Math.cos(2*Math.PI*c*u)); }
+  function bowSag(ph,pp,bx){
+    if(ph<3) return 0;
+    if(ph===3){ if(pp<0.6) return 3*clamp((bx-8)/60,0,1)*0.5; return 3.4*snapOsc((pp-0.6)/0.4,3); }
+    if(ph===4) return 0.5;
+    if(ph===5){ if(pp<0.6) return 0.5; return 1.8*snapOsc((pp-0.6)/0.4,2); }
+    return 0.5;
+  }
+  function sternSag(ph,pp,sx){
+    if(ph<4) return 0; if(ph===4) return 0.4;
+    if(ph===5){ if(pp<0.6) return 3*clamp((222-sx)/30,0,1)*0.6; return 2.6*snapOsc((pp-0.6)/0.4,3); }
+    return 0.5;
+  }
+
+  function render(){
+    var ph=phase, pp=p;
+    var pose=fleetPose(ph,pp);
+    var bowX=(ph===0)?8:bowXFor(ph,pp);
+    var sternX=bowX+L;
+    var fleetT="translate("+pose.fx+" "+pose.fy+") rotate("+pose.rot+")";
+    els.gSetTop.setAttribute("transform",fleetT);
+
+    if(ph<=5){ els.gKVBTop.setAttribute("transform",fleetT+" translate("+KVB_DX+" "+KVB_DY+")"); }
+    else if(ph===6){ var e=easeIO(pp); els.gKVBTop.setAttribute("transform","translate("+(bowX+KVB_DX)+" "+((MID+KVB_DY)-8*e)+") rotate("+(3*e)+")"); }
+    else { var tr=(ph===7)?easeIO(pp):1; var pt=bez({x:bowX+KVB_DX,y:(MID+KVB_DY)-8},{x:30,y:55},{x:35,y:20},tr); els.gKVBTop.setAttribute("transform","translate("+pt.x+" "+pt.y+") rotate("+(3*(1-tr))+")"); }
+
+    els.wiresTop.style.opacity = ph<=5?1:(ph===6?(1-pp):0);
+    els.zone.style.opacity = ph===0 ? lerp(1,0.55,pp) : 0.55;
+
+    var bsag=bowSag(ph,pp,bowX), ssag=sternSag(ph,pp,sternX);
+    var bowDeployed=ph>=2;
+    els.bowAnchorTop.style.opacity = ph<2?0:(ph===2?clamp(pp*2,0,1):1);
+    els.bowChainTop.style.opacity = bowDeployed?1:0;
+    if(bowDeployed) els.bowChainTop.setAttribute("d","M8,"+MID+" Q"+((8+bowX)/2)+","+(MID+bsag)+" "+bowX+","+MID);
+    var sternDeployed=ph>=4;
+    els.sternAnchorTop.style.opacity = ph<4?0:(ph===4?clamp(pp*2,0,1):1);
+    els.sternChainTop.style.opacity = sternDeployed?1:0;
+    if(sternDeployed) els.sternChainTop.setAttribute("d","M"+sternX+","+MID+" Q"+((sternX+222)/2)+","+(MID+ssag)+" 222,"+MID);
+
+    var showWall=(ph===1||ph===2);
+    els.measWall.style.opacity=showWall?1:0;
+    if(showWall){ els.measWallPath.setAttribute("d",bracket(0,bowX,98)); els.measWallLbl.setAttribute("x",bowX/2); els.measWallLbl.setAttribute("y",95); }
+    var showBow=(ph===3||ph>=5);
+    els.measBow.style.opacity=showBow?1:0;
+    if(showBow){ els.measBowPath.setAttribute("d",bracket(8,bowX,99)); els.measBowLbl.setAttribute("x",(8+bowX)/2); els.measBowLbl.setAttribute("y",96); els.measBowLbl.textContent=Math.round(bowX-8)+" m"; }
+    var showStern=(ph>=5);
+    els.measStern.style.opacity=showStern?1:0;
+    if(showStern){ els.measSternPath.setAttribute("d",bracket(sternX,222,99)); els.measSternLbl.setAttribute("x",(sternX+222)/2); els.measSternLbl.setAttribute("y",96); els.measSternLbl.textContent=Math.round(222-sternX)+" m"; }
+
+    if(ph===3){ els.arrowG.style.opacity=1; els.arrowPath.setAttribute("d","M96,121 L146,121 M146,121 L139,118 M146,121 L139,124"); }
+    else if(ph===5){ els.arrowG.style.opacity=1; els.arrowPath.setAttribute("d","M112,121 L62,121 M62,121 L69,118 M62,121 L69,124"); }
+    else els.arrowG.style.opacity=0;
+
+    // geen oranje stippellijn meer bij de laatste stap
+    els.setGlow.style.opacity=0;
+
+    var sinp=Math.sin(Math.PI*clamp(pp,0,1));
+    var washF = ph===0?clamp(1-pp,0,1) : ((ph===3||ph===5||ph===7)?sinp:0);
+    if(!playing) washF=0; // stil = geen schroefwater
+    els.kvbWash.style.opacity=washF;
+    els.kvbWash.setAttribute("transform", ph===3 ? "translate(370 0) scale(-1 1)" : "translate(0 0)");
+    els.setBow.style.opacity = (!playing)?0:(ph===0?clamp(1-pp,0,1):(ph===5?sinp:0));
+    els.kvbBow.style.opacity = (!playing)?0:(ph===7?sinp:0);
+
+    els.progress.style.width=((phase+Math.min(p,1))/N*100)+"%";
+    els.pill.classList.toggle("show", !playing);
+  }
+
+  function frame(ts){
+    if(playing && !dragging){
+      if(lastTs==null) lastTs=ts;
+      var dt=(ts-lastTs)/1000; lastTs=ts;
+      p += dt / DUR[phase];
+      while(p>=1){ if(phase<LAST){ p-=1; phase++; } else { p-=1; phase=0; } }
+      render();
+    } else { lastTs=null; }
+    requestAnimationFrame(frame);
+  }
+
+  // Vinger-/muisbediening: aanraken = stoppen, slepen = spoelen, loslaten = weer afspelen
+  var startX=0, startG=0;
+  function gpos(){ return phase+clamp(p,0,1); }
+  function setG(g){ g=clamp(g,0,N-0.0001); phase=Math.floor(g); if(phase>LAST) phase=LAST; p=clamp(g-phase,0,1); render(); }
+  els.stage.addEventListener("pointerdown",function(e){
+    dragging=true; playing=false; startX=e.clientX; startG=gpos();
+    try{ els.stage.setPointerCapture(e.pointerId); }catch(_){}
+    render();
+  });
+  els.stage.addEventListener("pointermove",function(e){
+    if(!dragging) return;
+    var w=window.innerWidth||1;
+    var dg=(e.clientX-startX)/w * N;   // hele schermbreedte = hele manoeuvre
+    setG(startG+dg);
+  });
+  function endDrag(){ if(!dragging) return; dragging=false; playing=true; lastTs=null; render(); }
+  els.stage.addEventListener("pointerup",endDrag);
+  els.stage.addEventListener("pointercancel",endDrag);
+  els.stage.addEventListener("pointerleave",function(e){ if(dragging && e.pointerType!=="touch") endDrag(); });
+
+  render();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
