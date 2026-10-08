@@ -42,6 +42,8 @@
   .toolbar .grow{flex:1 1 auto}
   .toolbar select,.toolbar button{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 12px;cursor:pointer}
   .toolbar button.print{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .toolbar .dllabel{font-family:var(--mono);font-size:11px;color:var(--text-dim)}
+  .toolbar button.dl:hover{border-color:var(--accent);color:var(--accent-ink);background:color-mix(in srgb,var(--accent) 12%,var(--bg))}
   .toolbar .note{font-family:var(--mono);font-size:11px;color:var(--text-dim)}
 
   .sheet{display:flex;justify-content:center;align-items:flex-start;overflow:auto;padding:14px;background:var(--bg)}
@@ -73,6 +75,8 @@
   .step .badge{flex:0 0 auto;font-family:var(--mono);font-size:7pt;font-weight:500;color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));border-radius:99px;padding:.5mm 2mm;white-space:nowrap}
   .step svg{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:1.4mm;background:var(--water)}
   .step .ax{font-size:8pt;line-height:1.3;color:var(--text);margin:0}
+  .step .tip{margin:auto 0 0;font-size:7pt;line-height:1.3;color:var(--text);background:color-mix(in srgb,var(--gold) 9%,var(--surface));border:1px solid color-mix(in srgb,var(--gold) 30%,var(--line));border-radius:1.4mm;padding:1.6mm 2mm}
+  .step .tip b{font-family:var(--mono);font-size:5.8pt;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);margin-right:1.4mm}
 
   .foot{display:flex;gap:5mm;align-items:flex-start}
   .safety{flex:1 1 auto}
@@ -110,7 +114,10 @@
     </select>
     <span class="note" id="noteEl">Liggend A4 · zet ‘Achtergrondafbeeldingen’ aan voor de kleuren.</span>
     <span class="grow"></span>
-    <button class="print" id="printBtn" type="button">🖨 Print / PDF</button>
+    <span class="dllabel" id="dlLabel">Download als PDF:</span>
+    <button class="dl" type="button" data-lang="nl">🇳🇱 NL</button>
+    <button class="dl" type="button" data-lang="de">🇩🇪 DE</button>
+    <button class="dl" type="button" data-lang="en">🇬🇧 EN</button>
   </div>
 
   <div class="sheet" id="sheet">
@@ -146,63 +153,63 @@
       kicker:"Instructiekaart · Dintelhaven", title:"Twee duwbakken voor anker leggen",
       sub:"Lange formatie: 2 Europa II-duwbakken (elk 76,5 m) aan bakboord, koppelverband (KVB, 185 m) aan stuurboord langszij.",
       note:"Liggend A4 · zet ‘Achtergrondafbeeldingen’ aan voor de kleuren.",
-      print:"🖨 Print / PDF", safetyTitle:"Veiligheidspunten",
+      print:"🖨 Print / PDF", safetyTitle:"Veiligheidspunten", tipWord:"Let op", dl:"Download als PDF:",
       legend:["Duwbak (BB)","KVB / motorschip (SB)","⚓ anker + ketting","➜ beweging"],
       keyfigs:[["5–10 m","Kop van de wal"],["60 m","Vooranker vieren"],["30 m","Daarna beide ankers"],["2","Ankers: voor + achter"]],
       safety:["Nader met minimale vaart; let op stroming en wind.","Anker nooit laten vallen met te veel vaart.","Ketting gecontroleerd vieren, niet met een klap.","Controleer dat beide ankers houden vóór het loskoppelen.","Houd afstand tot de wal en langsvarende scheepvaart.","Blijf controleren of de set niet krabt of verloopt."],
       footer:"Vereenvoudigde weergave voor instructie — niet op schaal. Volg altijd de schipper en de geldende voorschriften.",
       badges:["aanvaren","5–10 m","60 m","−60 m","2e anker","30 m / 30 m","los","→ kade ✓"],
       steps:[
-        {ti:"Aanvaren", ax:"KVB (SB) + 2 bakken (BB) varen naar de lege bakkenplaats."},
-        {ti:"Stilleggen", ax:"Kop 5–10 m van de wal stilleggen; vaart eruit."},
-        {ti:"Anker voor", ax:"Voorop anker laten vallen (60 m ketting beschikbaar)."},
-        {ti:"60 m achteruit", ax:"60 m achteruit; voorketting volledig vieren."},
-        {ti:"Anker achter", ax:"Achterop anker laten vallen, in lijn met het vooranker."},
-        {ti:"30 m vooruit", ax:"30 m vooruit: achter 30 m vieren, voor 30 m inhalen. Beide ankers 30 m."},
-        {ti:"Loskoppelen", ax:"Koppeldraden los; controleer dat de ankers houden."},
-        {ti:"Klaar — KVB weg", ax:"KVB vaart naar de kade; de bakken blijven zelfstandig vast tussen twee ankers, elk 30 m ketting."}
+        {ti:"Aanvaren", ax:"Het KVB (stuurboord) en de twee bakken (bakboord) varen in lange formatie naar de lege bakkenplaats.", tip:"Nader met minimale vaart; let op wind, stroming en overige vaart."},
+        {ti:"Stilleggen", ax:"Kop van de bakken 5–10 m van de wal stilleggen, haaks op de wal, en de vaart er volledig uit nemen.", tip:"Sta stil vóór het eerste anker valt — nooit met te veel vaart ankeren."},
+        {ti:"Anker voor", ax:"Voorop het eerste anker laten vallen. Dit vooranker heeft 60 m ketting beschikbaar.", tip:"Meld ‘anker voor is gevallen’ en houd de ketting in de gaten."},
+        {ti:"60 m achteruit", ax:"Met de hele set 60 m achteruit; vier daarbij de volledige voorketting gecontroleerd uit.", tip:"Vier gelijkmatig — laat de ketting niet met een klap uitschieten."},
+        {ti:"Anker achter", ax:"Achterop het tweede anker laten vallen, in lijn met het vooranker.", tip:"Controleer dat het achteranker vrij kan vallen."},
+        {ti:"30 m vooruit", ax:"30 m vooruit: achter 30 m vieren, voor 30 m inhalen. Beide ankers staan nu met 30 m ketting.", tip:"Houd voor- en achterketting in balans; zorg dat er geen loos in zit."},
+        {ti:"Loskoppelen", ax:"Koppeldraden tussen KVB en bakken losmaken; controleer eerst dat beide ankers houden.", tip:"Pas losmaken als je zeker weet dat de bakken blijven liggen."},
+        {ti:"Klaar — KVB weg", ax:"Het KVB vaart naar de kade om te laden; de bakken blijven zelfstandig vast tussen twee ankers (elk 30 m ketting).", tip:"Houd afstand van andere bakken; blijf controleren op krabben/verlopen."}
       ]
     },
     de:{
       kicker:"Merkblatt · Dintelhaven", title:"Zwei Schubleichter vor Anker legen",
       sub:"Lange Formation: 2 Europa-II-Leichter (je 76,5 m) an Backbord, Koppelverband (KVB, 185 m) längsseits an Steuerbord.",
       note:"A4 quer · ‘Hintergrundgrafiken’ aktivieren für die Farben.",
-      print:"🖨 Drucken / PDF", safetyTitle:"Sicherheitshinweise",
+      print:"🖨 Drucken / PDF", safetyTitle:"Sicherheitshinweise", tipWord:"Achtung", dl:"Als PDF herunterladen:",
       legend:["Schubleichter (BB)","KVB / Motorschiff (SB)","⚓ Anker + Kette","➜ Bewegung"],
       keyfigs:[["5–10 m","Bug vom Ufer"],["60 m","Buganker fieren"],["30 m","Danach beide Anker"],["2","Anker: vorn + hinten"]],
       safety:["Mit minimaler Fahrt annähern; auf Strömung und Wind achten.","Anker nie mit zu viel Fahrt fallen lassen.","Kette kontrolliert fieren, nicht mit einem Ruck.","Vor dem Abkoppeln prüfen, dass beide Anker halten.","Abstand zum Ufer und zur Schifffahrt halten.","Prüfen, dass der Verband nicht schleift oder treibt."],
       footer:"Vereinfachte Darstellung zu Schulungszwecken — nicht maßstabsgetreu. Stets Schiffsführer und Vorschriften befolgen.",
       badges:["Anfahrt","5–10 m","60 m","−60 m","2. Anker","30 m / 30 m","lösen","→ Kai ✓"],
       steps:[
-        {ti:"Anfahren", ax:"KVB (SB) + 2 Leichter (BB) fahren zum leeren Liegeplatz."},
-        {ti:"Stoppen", ax:"Bug 5–10 m vor dem Ufer stoppen; Fahrt heraus."},
-        {ti:"Anker vorn", ax:"Vorn Anker fallen lassen (60 m Kette verfügbar)."},
-        {ti:"60 m zurück", ax:"60 m zurück; vordere Kette voll fieren."},
-        {ti:"Anker hinten", ax:"Hinten Anker fallen lassen, in Linie mit dem Buganker."},
-        {ti:"30 m vor", ax:"30 m vor: hinten 30 m fieren, vorn 30 m einholen. Beide Anker 30 m."},
-        {ti:"Abkoppeln", ax:"Koppeldrähte lösen; prüfen, dass die Anker halten."},
-        {ti:"Fertig — KVB weg", ax:"KVB fährt zum Kai; die Leichter bleiben selbstständig fest zwischen zwei Ankern, je 30 m Kette."}
+        {ti:"Anfahren", ax:"Das KVB (Steuerbord) und die zwei Leichter (Backbord) fahren in langer Formation zum leeren Liegeplatz.", tip:"Mit minimaler Fahrt annähern; auf Wind, Strömung und übrigen Verkehr achten."},
+        {ti:"Stoppen", ax:"Bug der Leichter 5–10 m vor dem Ufer stoppen, rechtwinklig zum Ufer, und die Fahrt vollständig herausnehmen.", tip:"Stillstehen, bevor der erste Anker fällt — nie mit zu viel Fahrt ankern."},
+        {ti:"Anker vorn", ax:"Vorn den ersten Anker fallen lassen. Dieser Buganker hat 60 m Kette zur Verfügung.", tip:"„Anker vorn gefallen“ melden und die Kette im Auge behalten."},
+        {ti:"60 m zurück", ax:"Mit dem ganzen Verband 60 m zurück; dabei die vollständige vordere Kette kontrolliert fieren.", tip:"Gleichmäßig fieren — die Kette nicht mit einem Ruck auslaufen lassen."},
+        {ti:"Anker hinten", ax:"Hinten den zweiten Anker fallen lassen, in Linie mit dem Buganker.", tip:"Prüfen, dass der Heckanker frei fallen kann."},
+        {ti:"30 m vor", ax:"30 m vor: hinten 30 m fieren, vorn 30 m einholen. Beide Anker stehen nun mit 30 m Kette.", tip:"Vordere und hintere Kette im Gleichgewicht halten; kein Durchhang."},
+        {ti:"Abkoppeln", ax:"Koppeldrähte zwischen KVB und Leichtern lösen; zuerst prüfen, dass beide Anker halten.", tip:"Erst lösen, wenn die Leichter sicher liegen bleiben."},
+        {ti:"Fertig — KVB weg", ax:"Das KVB fährt zum Kai, um zu laden; die Leichter bleiben selbstständig fest zwischen zwei Ankern (je 30 m Kette).", tip:"Abstand zu anderen Leichtern halten; weiter auf Schleifen/Vertreiben prüfen."}
       ]
     },
     en:{
       kicker:"Instruction card · Dintelhaven", title:"Anchoring two barges",
       sub:"Long formation: 2 Europa II barges (76.5 m each) on port, coupled unit (KVB, 185 m) alongside to starboard.",
       note:"A4 landscape · enable ‘Background graphics’ for the colours.",
-      print:"🖨 Print / PDF", safetyTitle:"Safety points",
+      print:"🖨 Print / PDF", safetyTitle:"Safety points", tipWord:"Note", dl:"Download as PDF:",
       legend:["Barge (BB)","KVB / motor vessel (SB)","⚓ anchor + chain","➜ movement"],
       keyfigs:[["5–10 m","Bow from shore"],["60 m","Pay out bow anchor"],["30 m","Then both anchors"],["2","Anchors: fore + aft"]],
       safety:["Approach at minimum speed; mind current and wind.","Never let an anchor go with too much way on.","Pay out the chain under control, not with a jerk.","Check both anchors hold before casting off.","Keep clear of the shore and passing traffic.","Keep checking the unit isn’t dragging or shifting."],
       footer:"Simplified view for instruction — not to scale. Always follow the skipper and the applicable regulations.",
       badges:["approach","5–10 m","60 m","−60 m","2nd anchor","30 m / 30 m","cast off","→ quay ✓"],
       steps:[
-        {ti:"Approach", ax:"KVB (SB) + 2 barges (BB) head to the empty berth."},
-        {ti:"Stop", ax:"Stop the bow 5–10 m from the shore; take way off."},
-        {ti:"Bow anchor", ax:"Drop the bow anchor (60 m chain available)."},
-        {ti:"60 m astern", ax:"Move 60 m astern; pay out the full bow chain."},
-        {ti:"Stern anchor", ax:"Drop the stern anchor, in line with the bow anchor."},
-        {ti:"30 m ahead", ax:"30 m ahead: pay out 30 m aft, heave in 30 m fwd. Both anchors 30 m."},
-        {ti:"Uncouple", ax:"Cast off the wires; check the anchors are holding."},
-        {ti:"Done — KVB away", ax:"KVB leaves for the quay; the barges stay made fast on their own between two anchors, 30 m chain each."}
+        {ti:"Approach", ax:"The KVB (starboard) and the two barges (port) head for the empty berth in long formation.", tip:"Approach at minimum speed; mind wind, current and other traffic."},
+        {ti:"Stop", ax:"Stop the bow of the barges 5–10 m from the shore, square to the shore, and take all the way off.", tip:"Stop before the first anchor goes — never anchor with too much way on."},
+        {ti:"Bow anchor", ax:"Drop the first anchor forward. This bow anchor has 60 m of chain available.", tip:"Report ‘bow anchor let go’ and keep an eye on the chain."},
+        {ti:"60 m astern", ax:"Move the whole unit 60 m astern, paying out the full bow chain under control.", tip:"Pay out evenly — don’t let the chain run out with a jerk."},
+        {ti:"Stern anchor", ax:"Drop the second anchor aft, in line with the bow anchor.", tip:"Check the stern anchor can fall clear."},
+        {ti:"30 m ahead", ax:"30 m ahead: pay out 30 m aft, heave in 30 m forward. Both anchors now hold 30 m of chain.", tip:"Keep bow and stern chains balanced; no slack in the chain."},
+        {ti:"Uncouple", ax:"Cast off the wires between KVB and barges; first check both anchors are holding.", tip:"Only cast off once the barges will stay put."},
+        {ti:"Done — KVB away", ax:"The KVB leaves for the quay to load; the barges stay made fast on their own between two anchors (30 m chain each).", tip:"Keep clear of other barges; keep checking for dragging/shifting."}
       ]
     }
   };
@@ -238,7 +245,7 @@
   }
 
   var els={};
-  ["langSel","printBtn","noteEl","kicker","titleEl","subEl","legendLine","keyfigs","steps","safetyTitle","safetyList","footerEl","sheet","holder","page"].forEach(function(id){els[id]=document.getElementById(id);});
+  ["langSel","dlLabel","noteEl","kicker","titleEl","subEl","legendLine","keyfigs","steps","safetyTitle","safetyList","footerEl","sheet","holder","page"].forEach(function(id){els[id]=document.getElementById(id);});
 
   var lang="nl";
   try{ var sl=localStorage.getItem("dh-anker-kaart-lang"); if(sl&&I18N[sl]) lang=sl; }catch(e){}
@@ -247,7 +254,7 @@
     var d=I18N[lang];
     document.documentElement.lang=lang;
     els.kicker.textContent=d.kicker; els.titleEl.textContent=d.title; els.subEl.textContent=d.sub;
-    els.noteEl.textContent=d.note; els.printBtn.textContent=d.print; els.safetyTitle.textContent=d.safetyTitle; els.footerEl.textContent=d.footer;
+    els.noteEl.textContent=d.note; els.dlLabel.textContent=d.dl; els.safetyTitle.textContent=d.safetyTitle; els.footerEl.textContent=d.footer;
     var swc=["barge","kvb","anchor","move"];
     els.legendLine.innerHTML="";
     d.legend.forEach(function(txt,idx){
@@ -261,7 +268,7 @@
     els.steps.innerHTML="";
     d.steps.forEach(function(st,idx){
       var el=document.createElement("div"); el.className="step";
-      el.innerHTML='<div class="hd"><span class="num">'+(idx+1)+'</span><span class="ti">'+st.ti+'</span><span class="badge">'+d.badges[idx]+'</span></div>'+mini(idx)+'<p class="ax">'+st.ax+'</p>';
+      el.innerHTML='<div class="hd"><span class="num">'+(idx+1)+'</span><span class="ti">'+st.ti+'</span><span class="badge">'+d.badges[idx]+'</span></div>'+mini(idx)+'<p class="ax">'+st.ax+'</p>'+(st.tip?'<p class="tip"><b>'+d.tipWord+'</b>'+st.tip+'</p>':'');
       els.steps.appendChild(el);
     });
     els.safetyList.innerHTML="";
@@ -280,7 +287,15 @@
   }
 
   els.langSel.addEventListener("change",function(){ lang=this.value; try{ localStorage.setItem("dh-anker-kaart-lang",lang); }catch(e){} apply(); });
-  els.printBtn.addEventListener("click",function(){ window.print(); });
+  // Download-knoppen: zet de gekozen taal en open het printvenster (Opslaan als PDF).
+  Array.prototype.forEach.call(document.querySelectorAll(".toolbar button.dl"), function(btn){
+    btn.addEventListener("click", function(){
+      lang=btn.getAttribute("data-lang"); els.langSel.value=lang;
+      try{ localStorage.setItem("dh-anker-kaart-lang",lang); }catch(e){}
+      apply();
+      setTimeout(function(){ window.print(); }, 60);
+    });
+  });
   window.addEventListener("resize",fitPage);
   els.langSel.value=lang;
   apply();
