@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Duwbakken voor anker — instructie-animatie</title>
 <meta name="description" content="Meertalige stap-voor-stap instructie-animatie (NL/DE/EN) voor het nautisch veilig voor anker leggen van twee duwbakken in de Dintelhaven.">
+<script>
+  // Op een telefoon meteen de mobiele versie tonen i.p.v. de overzichtspagina.
+  // ?groot=1 slaat dit over.
+  (function(){
+    try{
+      if(/[?&]groot\b/.test(location.search)) return;
+      var mm = window.matchMedia;
+      if(mm && mm("(pointer:coarse) and (hover:none) and (max-width:860px)").matches){
+        location.replace("duwbakken-anker-mobiel.html");
+      }
+    }catch(e){}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -57,12 +70,6 @@
         <span class="ct">Groot scherm</span>
         <span class="cd">Volledige animatie met toelichting, boven- en zijaanzicht. Voor pc of tablet.</span>
         <span class="tag">NL · DE · EN</span>
-      </a>
-      <a class="card" href="duwbakken-anker-mobiel.html">
-        <span class="ico">📱</span>
-        <span class="ct">Mobiel (liggend)</span>
-        <span class="cd">Kale tekening met alleen de meters. Speelt automatisch; met de vinger pauzeren en spoelen.</span>
-        <span class="tag">telefoon</span>
       </a>
       <a class="card" href="duwbakken-anker-instructiekaart.html">
         <span class="ico">🖨️</span>

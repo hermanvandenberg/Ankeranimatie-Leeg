@@ -15,7 +15,7 @@ die ingebakken en werkt volledig zonder internet.
 | --- | --- | --- |
 | [`index.html`](index.html) | — | Landingspagina met links naar alle weergaven. |
 | [`duwbakken-anker-animatie.html`](duwbakken-anker-animatie.html) | pc / tablet | Volledige animatie met toelichting, boven- en zijaanzicht. |
-| [`duwbakken-anker-mobiel.html`](duwbakken-anker-mobiel.html) | telefoon (liggend) | Kale tekening met alleen de meters; met de vinger pauzeren en spoelen. |
+| [`duwbakken-anker-mobiel.html`](duwbakken-anker-mobiel.html) | telefoon (liggend) | Kale tekening met alleen de meters; met de vinger pauzeren en spoelen. Wordt op een telefoon **automatisch** getoond (de grote versie en het overzicht verwijzen daar vanzelf naartoe). |
 | [`duwbakken-anker-instructiekaart.html`](duwbakken-anker-instructiekaart.html) | print / PDF | Eén liggende A4 met alle acht stappen om uit te delen. |
 | [`duwbakken-anker-animatie-offline.html`](duwbakken-anker-animatie-offline.html) | zonder internet | Grote animatie met ingebakken lettertypen, los op te slaan. |
 
