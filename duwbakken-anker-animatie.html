@@ -126,12 +126,28 @@
   /* Schermvullende indeling: animatie links groot, tekst rechts compact */
   html,body{height:100%}
   body{overflow:hidden}
-  #app{height:100dvh;display:grid;grid-template-columns:minmax(0,1fr) clamp(250px,27%,350px);background:var(--bg)}
-  .col-anim{position:relative;min-width:0;min-height:0;display:flex;flex-direction:column;background:var(--water);overflow:hidden}
-  .top-stage{position:relative;flex:1 1 auto;min-height:0;overflow:hidden}
-  .top-stage>svg{position:absolute;inset:0;width:100%;height:100%}
-  .side-stage{position:relative;flex:0 0 auto;height:clamp(170px,32vh,380px);border-top:1px solid var(--line);background:var(--surface);overflow:hidden}
-  .side-stage>svg{position:absolute;inset:0;width:100%;height:100%}
+  #app{height:100dvh;display:grid;grid-template-columns:clamp(150px,15%,210px) minmax(0,1fr) clamp(250px,27%,350px);background:var(--bg)}
+
+  /* Linker kolom: mini-menu naar de andere weergaven */
+  .menu{min-width:0;display:flex;flex-direction:column;gap:4px;padding:16px 12px;border-right:1px solid var(--line);background:var(--bg);overflow:auto}
+  .menu .brand{display:flex;gap:6px;align-items:flex-start;font-family:var(--display);font-weight:700;font-size:13px;line-height:1.2;color:var(--text);margin:0 2px 10px}
+  .menu .brand .ic{color:var(--accent)}
+  .menu a{display:flex;gap:9px;align-items:center;text-decoration:none;font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--text-dim);background:transparent;border:1px solid transparent;border-radius:var(--radius-sm);padding:8px 9px;transition:background .12s,color .12s,border-color .12s}
+  .menu a .ic{font-size:15px;line-height:1;flex:0 0 auto}
+  .menu a:hover{color:var(--text);background:var(--surface);border-color:var(--line)}
+  .menu a.current{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+  .menu a.current:hover{color:var(--accent-ink);background:var(--accent)}
+  .menu .mfoot{margin-top:auto;font-family:var(--mono);font-size:8.5px;line-height:1.5;color:var(--text-dim);padding-top:12px}
+
+  /* Midden kolom: boven- en zijaanzicht op dezelfde breedte, zodat ze netjes
+     onder elkaar uitlijnen. Beide SVG's vullen de breedte (width:100%,
+     height:auto); de hoogte-cap houdt het geheel binnen beeld. */
+  .col-anim{position:relative;min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;background:var(--water);overflow:hidden}
+  .stages{position:relative;width:100%;max-width:calc((100dvh - 16px) * 1.08);margin:0 auto}
+  .top-stage{position:relative;width:100%}
+  .top-stage>svg{display:block;width:100%;height:auto}
+  .side-stage{position:relative;width:100%;border-top:1px solid var(--line);background:var(--surface)}
+  .side-stage>svg{display:block;width:100%;height:auto}
   .side-lbl{position:absolute;top:6px;left:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);z-index:2;pointer-events:none}
 
   .tools{position:absolute;top:10px;right:10px;display:flex;gap:6px;align-items:center;z-index:4}
@@ -170,10 +186,18 @@
   /* Smaller/korter scherm: altijd binnen beeld blijven — de kaders krimpen mee
      (de SVG schaalt via viewBox), i.p.v. buiten het scherm te vallen. */
   @media (max-width:820px){
-    #app{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) minmax(0,42vh)}
-    .panel2{border-left:0;border-top:1px solid var(--line);overflow:auto;min-height:0}
+    html,body{height:auto}
+    body{overflow:auto}
+    #app{height:auto;min-height:100dvh;grid-template-columns:1fr;grid-template-rows:auto auto auto}
+    .menu{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px;border-right:0;border-bottom:1px solid var(--line);padding:9px 12px}
+    .menu .brand{display:none}
+    .menu .mfoot{display:none}
+    .menu a{font-size:11.5px;padding:6px 9px}
+    .col-anim{justify-content:flex-start}
+    .stages{max-width:none}
+    .panel2{border-left:0;border-top:1px solid var(--line);overflow:visible;min-height:0}
   }
-  @media (max-height:540px){
+  @media (min-width:821px) and (max-height:540px){
     .side-stage{display:none}
   }
 </style>
@@ -181,7 +205,16 @@
 </head>
 <body>
 <div id="app">
+  <nav class="menu" aria-label="Weergaven">
+    <p class="brand"><span class="ic">⚓</span><span>Duwbakken voor anker</span></p>
+    <a class="current" href="duwbakken-anker-animatie.html" aria-current="page"><span class="ic">🖥️</span>Groot scherm</a>
+    <a href="duwbakken-anker-instructiekaart.html"><span class="ic">🖨️</span>Instructiekaart</a>
+    <a href="duwbakken-anker-mobiel.html"><span class="ic">📱</span>Mobiele versie</a>
+    <a href="index.html"><span class="ic">🏠</span>Overzicht</a>
+    <span class="mfoot">Dintelhaven · NL · DE · EN</span>
+  </nav>
   <div class="col-anim">
+  <div class="stages">
   <div class="top-stage">
     <svg id="top" viewBox="-16 -6 296 200" role="img" aria-label="Bovenaanzicht ankermanoeuvre">
       <rect x="-16" y="-6" width="296" height="200" fill="var(--water)"/>
@@ -343,6 +376,7 @@
       </g>
     </svg>
   </div><!-- /side-stage -->
+  </div><!-- /stages -->
   </div><!-- /col-anim -->
 
   <aside class="panel2">
